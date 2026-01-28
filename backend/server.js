@@ -49,11 +49,13 @@ app.get('/health', (req, res) => {
 // Import Routes
 const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/courseRoutes');
+const lessonRoutes = require('./routes/lessonRoutes');
 
 
 // Mount Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/lessons', lessonRoutes);
 // Get PORT from environment variables or default to 5000
 const PORT = process.env.PORT || 5000;
 
