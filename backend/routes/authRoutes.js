@@ -1,5 +1,7 @@
 const express = require('express');
 const { register, login, getMe } = require('../controllers/authController');
+const { protect } = require('../middleware/auth');
+
 
 // Create router
 const router = express.Router();
@@ -18,6 +20,6 @@ router.post('/login', login);
 
 // Protected route (we'll add middleware in Step 5)
 // router.get('/me', protect, getMe);
-router.get('/me', getMe); // For now, without protection
+router.get('/me', protect, getMe);
 
 module.exports = router;
