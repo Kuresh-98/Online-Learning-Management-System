@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import {
     HiAcademicCap,
     HiPlay,
@@ -12,57 +11,82 @@ import {
     HiClock,
     HiShieldCheck,
     HiChevronRight,
-    HiBookOpen,
-    HiViewGrid
+    HiBookOpen
 } from 'react-icons/hi';
 import { FaGraduationCap, FaLaptopCode, FaPalette, FaChartLine } from 'react-icons/fa';
+import api from '../utils/api';
 
 const Home = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const { isAuthenticated, user } = useAuth();
+    const [featuredCourses, setFeaturedCourses] = useState([]);
+    const [coursesLoading, setCoursesLoading] = useState(true);
 
     useEffect(() => {
         setIsVisible(true);
+        fetchFeaturedCourses();
     }, []);
 
+    const fetchFeaturedCourses = async () => {
+        try {
+            setCoursesLoading(true);
+            const res = await api.get('/courses?sort=popular');
+            // Get top 3 courses
+            const courses = (res.data.data || []).slice(0, 3).map((course, index) => ({
+                id: course._id,
+                title: course.title,
+                instructor: course.instructor?.name || 'Instructor',
+                rating: course.rating || 4.5,
+                students: course.enrolledCount || 0,
+                price: course.price === 0 ? 'Free' : `₹${course.price}`,
+                image: course.thumbnail || 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400',
+                tag: index === 0 ? 'Popular' : index === 1 ? 'Trending' : 'New'
+            }));
+            setFeaturedCourses(courses);
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+            // Fallback to default courses if API fails
+            setFeaturedCourses([
+                {
+                    id: 1,
+                    title: 'Web Development Bootcamp',
+                    instructor: 'Rahul Sharma',
+                    rating: 4.7,
+                    students: 342,
+                    price: 'Free',
+                    image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400',
+                    tag: 'Popular'
+                },
+                {
+                    id: 2,
+                    title: 'Backend with Node.js',
+                    instructor: 'Priya Patel',
+                    rating: 4.5,
+                    students: 218,
+                    price: 'Free',
+                    image: 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400',
+                    tag: 'Trending'
+                },
+                {
+                    id: 3,
+                    title: 'UI Design Essentials',
+                    instructor: 'Amit Kumar',
+                    rating: 4.6,
+                    students: 156,
+                    price: 'Free',
+                    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400',
+                    tag: 'New'
+                },
+            ]);
+        } finally {
+            setCoursesLoading(false);
+        }
+    };
+
     const categories = [
-        { icon: <FaLaptopCode />, name: 'Development', courses: 24, color: 'from-blue-500 to-cyan-400' },
+        { icon: <FaLaptopCode />, name: 'Programming', courses: 24, color: 'from-blue-500 to-cyan-400' },
         { icon: <FaPalette />, name: 'Design', courses: 18, color: 'from-pink-500 to-rose-400' },
         { icon: <FaChartLine />, name: 'Business', courses: 15, color: 'from-green-500 to-emerald-400' },
-        { icon: <FaGraduationCap />, name: 'Academic', courses: 21, color: 'from-purple-500 to-violet-400' },
-    ];
-
-    const featuredCourses = [
-        {
-            id: 1,
-            title: 'Web Development Bootcamp',
-            instructor: 'Rahul Sharma',
-            rating: 4.7,
-            students: 342,
-            price: 'Free',
-            image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400',
-            tag: 'Popular'
-        },
-        {
-            id: 2,
-            title: 'Backend with Node.js',
-            instructor: 'Priya Patel',
-            rating: 4.5,
-            students: 218,
-            price: 'Free',
-            image: 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400',
-            tag: 'Trending'
-        },
-        {
-            id: 3,
-            title: 'UI Design Essentials',
-            instructor: 'Amit Kumar',
-            rating: 4.6,
-            students: 156,
-            price: 'Free',
-            image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400',
-            tag: 'New'
-        },
+        { icon: <FaGraduationCap />, name: 'Data Science', courses: 21, color: 'from-purple-500 to-violet-400' },
     ];
 
     const testimonials = [
@@ -91,61 +115,6 @@ const Home = () => {
 
     return (
         <div className="min-h-screen bg-white overflow-hidden">
-            {/* Navigation Bar */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <Link to="/" className="flex items-center gap-2">
-                            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                                <HiAcademicCap className="w-6 h-6 text-white" />
-                            </div>
-                            <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                                LearnHub
-                            </span>
-                        </Link>
-
-                        <div className="hidden md:flex items-center gap-8">
-                            <Link to="/courses" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                                Courses
-                            </Link>
-                            <Link to="/about" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                                About
-                            </Link>
-                            <Link to="/contact" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                                Contact
-                            </Link>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                            {isAuthenticated ? (
-                                <Link
-                                    to="/dashboard"
-                                    className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:-translate-y-0.5"
-                                >
-                                    <HiViewGrid className="w-4 h-4" />
-                                    Dashboard
-                                </Link>
-                            ) : (
-                                <>
-                                    <Link
-                                        to="/login"
-                                        className="px-4 py-2 text-gray-700 font-medium hover:text-gray-900 transition-colors"
-                                    >
-                                        Sign In
-                                    </Link>
-                                    <Link
-                                        to="/register"
-                                        className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:-translate-y-0.5"
-                                    >
-                                        Get Started
-                                    </Link>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
             {/* Hero Section */}
             <section className="relative pt-24 pb-20 lg:pt-28 lg:pb-32">
                 {/* Background Elements */}
@@ -295,64 +264,91 @@ const Home = () => {
                         </Link>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {featuredCourses.map((course) => (
-                            <div
-                                key={course.id}
-                                className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 hover:-translate-y-2"
-                            >
-                                {/* Image */}
-                                <div className="relative h-48 overflow-hidden">
-                                    <img
-                                        src={course.image}
-                                        alt={course.title}
-                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                                    <span className={`absolute top-4 left-4 px-3 py-1 text-xs font-semibold rounded-full ${course.tag === 'Bestseller' ? 'bg-yellow-400 text-yellow-900' :
-                                        course.tag === 'Popular' ? 'bg-blue-500 text-white' :
-                                            'bg-green-500 text-white'
-                                        }`}>
-                                        {course.tag}
-                                    </span>
-                                    <button className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                                            <HiPlay className="w-8 h-8 text-blue-600 ml-1" />
+                    {coursesLoading ? (
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[1, 2, 3].map((i) => (
+                                <div key={i} className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse">
+                                    <div className="h-48 bg-gray-200"></div>
+                                    <div className="p-6">
+                                        <div className="h-5 bg-gray-200 rounded w-3/4 mb-3"></div>
+                                        <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+                                        <div className="flex gap-4 mb-4">
+                                            <div className="h-4 bg-gray-200 rounded w-16"></div>
+                                            <div className="h-4 bg-gray-200 rounded w-24"></div>
                                         </div>
-                                    </button>
-                                </div>
-
-                                {/* Content */}
-                                <div className="p-6">
-                                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                                        {course.title}
-                                    </h3>
-                                    <p className="text-sm text-gray-500 mb-4">by {course.instructor}</p>
-
-                                    <div className="flex items-center gap-4 mb-4">
-                                        <div className="flex items-center gap-1">
-                                            <HiStar className="w-4 h-4 text-yellow-400" />
-                                            <span className="text-sm font-semibold text-gray-900">{course.rating}</span>
-                                        </div>
-                                        <div className="flex items-center gap-1 text-gray-500">
-                                            <HiUsers className="w-4 h-4" />
-                                            <span className="text-sm">{course.students.toLocaleString()} students</span>
+                                        <div className="flex justify-between pt-4 border-t border-gray-100">
+                                            <div className="h-6 bg-gray-200 rounded w-16"></div>
+                                            <div className="h-10 bg-gray-200 rounded w-24"></div>
                                         </div>
                                     </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : featuredCourses.length === 0 ? (
+                        <div className="text-center py-12">
+                            <HiBookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                            <p className="text-gray-500">No courses available yet. Check back soon!</p>
+                        </div>
+                    ) : (
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {featuredCourses.map((course) => (
+                                <div
+                                    key={course.id}
+                                    className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 hover:-translate-y-2"
+                                >
+                                    {/* Image */}
+                                    <div className="relative h-48 overflow-hidden">
+                                        <img
+                                            src={course.image}
+                                            alt={course.title}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                        <span className={`absolute top-4 left-4 px-3 py-1 text-xs font-semibold rounded-full ${course.tag === 'Bestseller' ? 'bg-yellow-400 text-yellow-900' :
+                                            course.tag === 'Popular' ? 'bg-blue-500 text-white' :
+                                                'bg-green-500 text-white'
+                                            }`}>
+                                            {course.tag}
+                                        </span>
+                                        <button className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                                                <HiPlay className="w-8 h-8 text-blue-600 ml-1" />
+                                            </div>
+                                        </button>
+                                    </div>
 
-                                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                                        <span className="text-xl font-bold text-green-600">{course.price}</span>
-                                        <Link
-                                            to={`/course/${course.id}`}
-                                            className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-blue-600 hover:text-white transition-colors"
-                                        >
-                                            Enroll Now
-                                        </Link>
+                                    {/* Content */}
+                                    <div className="p-6">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                            {course.title}
+                                        </h3>
+                                        <p className="text-sm text-gray-500 mb-4">by {course.instructor}</p>
+
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <div className="flex items-center gap-1">
+                                                <HiStar className="w-4 h-4 text-yellow-400" />
+                                                <span className="text-sm font-semibold text-gray-900">{course.rating}</span>
+                                            </div>
+                                            <div className="flex items-center gap-1 text-gray-500">
+                                                <HiUsers className="w-4 h-4" />
+                                                <span className="text-sm">{course.students.toLocaleString()} students</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                                            <span className="text-xl font-bold text-green-600">{course.price}</span>
+                                            <Link
+                                                to={`/course/${course.id}`}
+                                                className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-blue-600 hover:text-white transition-colors"
+                                            >
+                                                Enroll Now
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -467,69 +463,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
-            {/* Footer */}
-            <footer className="py-16 bg-gray-900 text-gray-400">
-                <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div className="grid md:grid-cols-4 gap-12 mb-12">
-                        <div>
-                            <div className="flex items-center gap-2 mb-4">
-                                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
-                                    <HiAcademicCap className="w-6 h-6 text-white" />
-                                </div>
-                                <span className="text-xl font-bold text-white">LearnHub</span>
-                            </div>
-                            <p className="text-sm leading-relaxed">
-                                Empowering learners worldwide with quality education and expert-led courses.
-                            </p>
-                        </div>
-
-                        <div>
-                            <h4 className="text-white font-semibold mb-4">Platform</h4>
-                            <ul className="space-y-2 text-sm">
-                                <li><Link to="/courses" className="hover:text-white transition-colors">Browse Courses</Link></li>
-                                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
-                                <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                                <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h4 className="text-white font-semibold mb-4">Categories</h4>
-                            <ul className="space-y-2 text-sm">
-                                <li><Link to="/courses?category=development" className="hover:text-white transition-colors">Development</Link></li>
-                                <li><Link to="/courses?category=design" className="hover:text-white transition-colors">Design</Link></li>
-                                <li><Link to="/courses?category=business" className="hover:text-white transition-colors">Business</Link></li>
-                                <li><Link to="/courses?category=academic" className="hover:text-white transition-colors">Academic</Link></li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h4 className="text-white font-semibold mb-4">Legal</h4>
-                            <ul className="space-y-2 text-sm">
-                                <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                                <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-                                <li><Link to="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
-                        <p className="text-sm">© 2026 LearnHub. All rights reserved.</p>
-                        <div className="flex items-center gap-4">
-                            <a href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors">
-                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" /></svg>
-                            </a>
-                            <a href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors">
-                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
-                            </a>
-                            <a href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors">
-                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 };

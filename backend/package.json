@@ -6,7 +6,10 @@
     "scripts": {
         "start": "node server.js",
         "dev": "nodemon server.js",
-        "seed:admin": "node seed/adminSeed.js"
+        "seed:admin": "node seed/adminSeed.js",
+        "seed:courses": "node seed/courseSeed.js",
+        "seed:lessons": "node seed/lessonSeed.js",
+        "seed:all": "npm run seed:admin && npm run seed:courses && npm run seed:lessons"
     },
     "keywords": [
         "lms",

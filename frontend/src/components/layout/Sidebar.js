@@ -12,11 +12,9 @@ import {
     HiChevronRight,
     HiPlusCircle,
     HiClipboardList,
-    HiChatAlt,
     HiChartBar,
     HiUserGroup,
     HiShieldCheck,
-    HiDocumentText,
     HiStar
 } from 'react-icons/hi';
 
@@ -63,11 +61,6 @@ const Sidebar = () => {
                     name: 'Analytics',
                     path: '/dashboard/analytics',
                     icon: <HiChartBar className="w-5 h-5" />
-                },
-                {
-                    name: 'Reports',
-                    path: '/dashboard/reports',
-                    icon: <HiDocumentText className="w-5 h-5" />
                 }
             ];
         }
@@ -94,11 +87,6 @@ const Sidebar = () => {
                     name: 'Analytics',
                     path: '/dashboard/analytics',
                     icon: <HiChartBar className="w-5 h-5" />
-                },
-                {
-                    name: 'Messages',
-                    path: '/dashboard/messages',
-                    icon: <HiChatAlt className="w-5 h-5" />
                 }
             ];
         }
@@ -120,11 +108,6 @@ const Sidebar = () => {
                 name: 'My Reviews',
                 path: '/dashboard/reviews',
                 icon: <HiStar className="w-5 h-5" />
-            },
-            {
-                name: 'Messages',
-                path: '/dashboard/messages',
-                icon: <HiChatAlt className="w-5 h-5" />
             }
         ];
     };

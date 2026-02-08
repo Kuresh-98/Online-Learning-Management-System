@@ -7,10 +7,32 @@ const Course = require('../models/course');
  */
 exports.getAllCourses = async (req, res) => {
     try {
-        // Only show approved courses to students
-        const courses = await Course.find({ status: 'approved', isPublished: true })
+        // Build query
+        let query = { status: 'approved', isPublished: true };
+
+        // Filter by category
+        if (req.query.category && req.query.category !== 'All Categories') {
+            query.category = req.query.category;
+        }
+
+        // Filter by level
+        if (req.query.level && req.query.level !== 'All Levels') {
+            query.level = req.query.level.charAt(0).toUpperCase() + req.query.level.slice(1);
+        }
+
+        // Build sort
+        let sortOption = { createdAt: -1 }; // default: newest
+        if (req.query.sort === 'popular') {
+            sortOption = { enrolledCount: -1 };
+        } else if (req.query.sort === 'rating') {
+            sortOption = { rating: -1 };
+        } else if (req.query.sort === 'title') {
+            sortOption = { title: 1 };
+        }
+
+        const courses = await Course.find(query)
             .populate('instructor', 'name email profilePicture')
-            .sort({ createdAt: -1 });
+            .sort(sortOption);
 
         res.status(200).json({
             success: true,

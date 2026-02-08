@@ -376,3 +376,89 @@ exports.getCourseStudents = async (req, res) => {
         });
     }
 };
+
+/**
+ * @desc    Get all students across all instructor's courses
+ * @route   GET /api/enrollments/instructor/all-students
+ * @access  Private (Instructor)
+ */
+exports.getInstructorAllStudents = async (req, res) => {
+    try {
+        // Get all courses by this instructor
+        const instructorCourses = await Course.find({ instructor: req.user.id });
+        const courseIds = instructorCourses.map(c => c._id);
+
+        if (courseIds.length === 0) {
+            return res.status(200).json({
+                success: true,
+                count: 0,
+                data: []
+            });
+        }
+
+        // Get all enrollments for instructor's courses
+        const enrollments = await Enrollment.find({
+            course: { $in: courseIds },
+            status: { $ne: 'dropped' }
+        })
+            .populate('student', 'name email profilePicture')
+            .populate('course', 'title')
+            .sort({ enrolledAt: -1 });
+
+        // Format the data
+        const students = enrollments.map(enrollment => ({
+            id: enrollment._id,
+            name: enrollment.student?.name || 'Unknown',
+            email: enrollment.student?.email || '',
+            profilePicture: enrollment.student?.profilePicture,
+            courseId: enrollment.course?._id,
+            courseName: enrollment.course?.title || 'Unknown Course',
+            progress: enrollment.progress || 0,
+            enrolledDate: enrollment.enrolledAt,
+            lastActive: enrollment.lastAccessedAt || enrollment.enrolledAt,
+            status: enrollment.status
+        }));
+
+        res.status(200).json({
+            success: true,
+            count: students.length,
+            data: students
+        });
+    } catch (error) {
+        console.error('Get Instructor Students Error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching students',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * @desc    Get total enrollment count (Admin only)
+ * @route   GET /api/enrollments/admin/stats
+ * @access  Private (Admin)
+ */
+exports.getEnrollmentStats = async (req, res) => {
+    try {
+        const totalEnrollments = await Enrollment.countDocuments({ status: { $ne: 'dropped' } });
+        const activeEnrollments = await Enrollment.countDocuments({ status: 'active' });
+        const completedEnrollments = await Enrollment.countDocuments({ status: 'completed' });
+
+        res.status(200).json({
+            success: true,
+            data: {
+                total: totalEnrollments,
+                active: activeEnrollments,
+                completed: completedEnrollments
+            }
+        });
+    } catch (error) {
+        console.error('Get Enrollment Stats Error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching enrollment stats',
+            error: error.message
+        });
+    }
+};

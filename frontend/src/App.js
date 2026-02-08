@@ -6,6 +6,7 @@ import { ProtectedRoute, PublicRoute } from './components/common/ProtectedRoute'
 
 // Layout Components
 import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
 import DashboardLayout from './components/layout/DashboardLayout';
 
 // Public Pages
@@ -14,6 +15,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 // Dashboard Pages
 import Dashboard from './pages/dashboard/Dashboard';
@@ -25,11 +28,9 @@ import MyCourses from './pages/dashboard/MyCourses';
 import AdminUsers from './pages/dashboard/AdminUsers';
 import AdminCourses from './pages/dashboard/AdminCourses';
 import AdminApprovals from './pages/dashboard/AdminApprovals';
-import Reports from './pages/dashboard/Reports';
 
 // Shared Pages
 import Analytics from './pages/dashboard/Analytics';
-import Messages from './pages/dashboard/Messages';
 import InstructorStudents from './pages/dashboard/InstructorStudents';
 import StudentReviews from './pages/dashboard/StudentReviews';
 
@@ -73,10 +74,12 @@ function App() {
         />
 
         <Routes>
-          {/* Public Routes with Navbar */}
-          <Route path="/" element={<><Navbar /><Home /></>} />
-          <Route path="/courses" element={<><Navbar /><Courses /></>} />
-          <Route path="/course/:id" element={<><Navbar /><CourseDetail /></>} />
+          {/* Public Routes with Navbar and Footer */}
+          <Route path="/" element={<><Navbar /><Home /><Footer /></>} />
+          <Route path="/courses" element={<><Navbar /><Courses /><Footer /></>} />
+          <Route path="/course/:id" element={<><Navbar /><CourseDetail /><Footer /></>} />
+          <Route path="/about" element={<><Navbar /><About /><Footer /></>} />
+          <Route path="/contact" element={<><Navbar /><Contact /><Footer /></>} />
 
           {/* Auth Routes (No Navbar) */}
           <Route
@@ -120,11 +123,9 @@ function App() {
             <Route path="users" element={<AdminUsers />} />
             <Route path="courses" element={<AdminCourses />} />
             <Route path="approvals" element={<AdminApprovals />} />
-            <Route path="reports" element={<Reports />} />
 
             {/* Shared Routes */}
             <Route path="analytics" element={<Analytics />} />
-            <Route path="messages" element={<Messages />} />
           </Route>
 
           {/* 404 Not Found */}

@@ -31,32 +31,24 @@ const StudentReviews = () => {
             const enrollments = enrollmentsRes.data.data || [];
             setEnrolledCourses(enrollments);
 
-            // Mock reviews data - in a real app, fetch from API
-            const mockReviews = [
-                {
-                    id: 1,
-                    courseId: enrollments[0]?.course?._id,
-                    courseName: enrollments[0]?.course?.title || 'Web Development Bootcamp',
-                    courseImage: enrollments[0]?.course?.thumbnail,
-                    rating: 5,
-                    text: 'Excellent course! The instructor explains concepts clearly and the projects are very practical.',
-                    createdAt: '2025-01-20T10:00:00Z',
-                    helpful: 12
-                },
-                {
-                    id: 2,
-                    courseId: enrollments[1]?.course?._id,
-                    courseName: enrollments[1]?.course?.title || 'React Fundamentals',
-                    courseImage: enrollments[1]?.course?.thumbnail,
-                    rating: 4,
-                    text: 'Great content, learned a lot about React hooks and state management. Would love more advanced topics.',
-                    createdAt: '2025-01-15T14:30:00Z',
-                    helpful: 8
-                }
-            ];
-            setReviews(mockReviews);
+            // Extract reviews from enrollments (where review exists)
+            const reviewsFromEnrollments = enrollments
+                .filter(enrollment => enrollment.rating || enrollment.review)
+                .map(enrollment => ({
+                    id: enrollment._id,
+                    courseId: enrollment.course?._id,
+                    courseName: enrollment.course?.title || 'Unknown Course',
+                    courseImage: enrollment.course?.thumbnail,
+                    rating: enrollment.rating || 0,
+                    text: enrollment.review || '',
+                    createdAt: enrollment.updatedAt || enrollment.enrolledAt,
+                    helpful: 0
+                }));
+
+            setReviews(reviewsFromEnrollments);
         } catch (error) {
             console.error('Error fetching data:', error);
+            setReviews([]);
         } finally {
             setLoading(false);
         }

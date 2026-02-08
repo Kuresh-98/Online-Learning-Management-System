@@ -28,18 +28,15 @@ const Courses = () => {
 
     const categories = [
         'All Categories',
-        'Web Development',
-        'Mobile Development',
+        'Programming',
+        'Design',
+        'Business',
+        'Marketing',
         'Data Science',
-        'Machine Learning',
-        'Cloud Computing',
-        'DevOps',
-        'Cybersecurity',
-        'UI/UX Design',
         'Other'
     ];
 
-    const levels = ['All Levels', 'beginner', 'intermediate', 'advanced'];
+    const levels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced'];
     const sortOptions = [
         { value: 'newest', label: 'Newest First' },
         { value: 'popular', label: 'Most Popular' },
@@ -54,22 +51,28 @@ const Courses = () => {
     const fetchCourses = async () => {
         try {
             setLoading(true);
-            let url = '/courses?isApproved=true';
+            let url = '/courses';
+            const params = [];
 
             if (filters.category && filters.category !== 'All Categories') {
-                url += `&category=${filters.category}`;
+                params.push(`category=${encodeURIComponent(filters.category)}`);
             }
             if (filters.level && filters.level !== 'All Levels') {
-                url += `&level=${filters.level}`;
+                params.push(`level=${encodeURIComponent(filters.level)}`);
             }
             if (filters.sort) {
-                url += `&sort=${filters.sort}`;
+                params.push(`sort=${filters.sort}`);
+            }
+
+            if (params.length > 0) {
+                url += '?' + params.join('&');
             }
 
             const res = await api.get(url);
             setCourses(res.data.data || []);
         } catch (error) {
             console.error('Error fetching courses:', error);
+            setCourses([]);
         } finally {
             setLoading(false);
         }
@@ -82,11 +85,11 @@ const Courses = () => {
 
     const getLevelBadgeColor = (level) => {
         switch (level) {
-            case 'beginner':
+            case 'Beginner':
                 return 'bg-green-100 text-green-700';
-            case 'intermediate':
+            case 'Intermediate':
                 return 'bg-yellow-100 text-yellow-700';
-            case 'advanced':
+            case 'Advanced':
                 return 'bg-red-100 text-red-700';
             default:
                 return 'bg-gray-100 text-gray-700';

@@ -27,16 +27,13 @@ const AdminUsers = () => {
 
     const fetchUsers = async () => {
         try {
-            // In a real app, you'd have an admin endpoint for this
-            // For now, we'll simulate with sample data
-            setUsers([
-                { _id: '1', name: 'Admin User', email: 'admin@learnhub.com', role: 'admin', isActive: true, createdAt: new Date() },
-                { _id: '2', name: 'John Instructor', email: 'john@example.com', role: 'instructor', isActive: true, createdAt: new Date() },
-                { _id: '3', name: 'Jane Student', email: 'jane@example.com', role: 'student', isActive: true, createdAt: new Date() },
-            ]);
+            // Fetch all users from backend
+            const res = await api.get('/auth/users');
+            setUsers(res.data.data || []);
         } catch (error) {
             console.error('Error fetching users:', error);
             toast.error('Failed to load users');
+            setUsers([]);
         } finally {
             setLoading(false);
         }

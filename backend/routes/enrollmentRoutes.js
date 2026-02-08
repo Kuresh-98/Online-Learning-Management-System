@@ -6,7 +6,9 @@ const {
     completeLesson,
     addReview,
     dropCourse,
-    getCourseStudents
+    getCourseStudents,
+    getInstructorAllStudents,
+    getEnrollmentStats
 } = require('../controllers/enrollmentController');
 
 const { protect, authorize } = require('../middleware/auth');
@@ -24,9 +26,16 @@ const router = express.Router();
  * PUT    /api/enrollments/:id/review           - Add review/rating
  * DELETE /api/enrollments/:id                  - Drop course
  * 
+ * Admin routes (protected + admin role)
+ * GET    /api/enrollments/admin/stats          - Get enrollment statistics
+ * 
  * Instructor routes (protected + instructor role)
- * GET    /api/enrollments/course/:courseId/students - Get course students
+ * GET    /api/enrollments/instructor/all-students    - Get all students
+ * GET    /api/enrollments/course/:courseId/students  - Get course students
  */
+
+// Admin routes (MUST be before :id routes)
+router.get('/admin/stats', protect, authorize('admin'), getEnrollmentStats);
 
 // Student routes
 router.post('/', protect, authorize('student'), enrollInCourse);
@@ -36,7 +45,8 @@ router.put('/:id/complete-lesson', protect, authorize('student'), completeLesson
 router.put('/:id/review', protect, authorize('student'), addReview);
 router.delete('/:id', protect, authorize('student'), dropCourse);
 
-// Instructor routes
+// Instructor routes (MUST be before :id routes)
+router.get('/instructor/all-students', protect, authorize('instructor', 'admin'), getInstructorAllStudents);
 router.get('/course/:courseId/students', protect, authorize('instructor', 'admin'), getCourseStudents);
 
 module.exports = router;

@@ -20,21 +20,47 @@ const InstructorStudents = () => {
             const coursesData = coursesRes.data.data || [];
             setCourses(coursesData);
 
-            // For now, use mock student data
-            // In a real app, you'd fetch enrolled students per course
-            const mockStudents = [
-                { id: 1, name: 'Sarah Johnson', email: 'sarah.j@email.com', courseId: coursesData[0]?._id, courseName: coursesData[0]?.title || 'Web Development', progress: 85, enrolledDate: '2025-01-15', lastActive: '2 hours ago' },
-                { id: 2, name: 'Michael Chen', email: 'mchen@email.com', courseId: coursesData[0]?._id, courseName: coursesData[0]?.title || 'Web Development', progress: 62, enrolledDate: '2025-01-18', lastActive: '1 day ago' },
-                { id: 3, name: 'Emily Davis', email: 'emilyd@email.com', courseId: coursesData[1]?._id, courseName: coursesData[1]?.title || 'React Basics', progress: 100, enrolledDate: '2024-12-10', lastActive: '3 hours ago' },
-                { id: 4, name: 'James Wilson', email: 'jwilson@email.com', courseId: coursesData[0]?._id, courseName: coursesData[0]?.title || 'Web Development', progress: 34, enrolledDate: '2025-02-01', lastActive: '5 days ago' },
-                { id: 5, name: 'Olivia Martinez', email: 'omartinez@email.com', courseId: coursesData[1]?._id, courseName: coursesData[1]?.title || 'React Basics', progress: 78, enrolledDate: '2025-01-22', lastActive: '6 hours ago' }
-            ];
-            setStudents(mockStudents);
+            // Fetch real students from API
+            const studentsRes = await api.get('/enrollments/instructor/all-students');
+            const studentsData = studentsRes.data.data || [];
+
+            // Format the data for display
+            const formattedStudents = studentsData.map(student => ({
+                id: student.id,
+                name: student.name,
+                email: student.email,
+                profilePicture: student.profilePicture,
+                courseId: student.courseId,
+                courseName: student.courseName,
+                progress: student.progress || 0,
+                enrolledDate: student.enrolledDate,
+                lastActive: formatTimeAgo(student.lastActive),
+                status: student.status
+            }));
+
+            setStudents(formattedStudents);
         } catch (error) {
             console.error('Error fetching data:', error);
+            setStudents([]);
         } finally {
             setLoading(false);
         }
+    };
+
+    // Format date to "X time ago"
+    const formatTimeAgo = (date) => {
+        if (!date) return 'Never';
+        const now = new Date();
+        const past = new Date(date);
+        const diffMs = now - past;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 60) return `${diffMins} min ago`;
+        if (diffHours < 24) return `${diffHours} hours ago`;
+        if (diffDays < 7) return `${diffDays} days ago`;
+        return past.toLocaleDateString();
     };
 
     const filteredStudents = students.filter(student => {
@@ -165,7 +191,7 @@ const InstructorStudents = () => {
                                         <div className="w-32">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <span className={`text-sm font-medium ${student.progress === 100 ? 'text-green-600' :
-                                                        student.progress > 50 ? 'text-blue-600' : 'text-yellow-600'
+                                                    student.progress > 50 ? 'text-blue-600' : 'text-yellow-600'
                                                     }`}>
                                                     {student.progress}%
                                                 </span>
@@ -173,7 +199,7 @@ const InstructorStudents = () => {
                                             <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                                                 <div
                                                     className={`h-full rounded-full transition-all ${student.progress === 100 ? 'bg-green-500' :
-                                                            student.progress > 50 ? 'bg-blue-500' : 'bg-yellow-500'
+                                                        student.progress > 50 ? 'bg-blue-500' : 'bg-yellow-500'
                                                         }`}
                                                     style={{ width: `${student.progress}%` }}
                                                 />

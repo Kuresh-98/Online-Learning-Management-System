@@ -66,14 +66,14 @@ const InstructorDashboard = () => {
             value: stats.totalCourses,
             icon: <HiBookOpen className="w-6 h-6" />,
             bgColor: 'bg-blue-500',
-            change: '+2 this month'
+            change: 'All courses'
         },
         {
             title: 'Total Students',
             value: stats.totalStudents,
             icon: <HiUsers className="w-6 h-6" />,
             bgColor: 'bg-green-500',
-            change: '+15 this week'
+            change: 'Enrolled'
         },
         {
             title: 'Pending Approval',

@@ -7,13 +7,10 @@ import {
     HiX,
     HiChevronDown,
     HiLogout,
-    HiUser,
-    HiCog,
     HiViewGrid
 } from 'react-icons/hi';
 
 const Navbar = () => {
-    const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
@@ -23,15 +20,6 @@ const Navbar = () => {
 
     // Check if we're on auth pages
     const isAuthPage = ['/login', '/register'].includes(location.pathname);
-
-    // Handle scroll effect
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -72,20 +60,15 @@ const Navbar = () => {
     };
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-                ? 'bg-white/95 backdrop-blur-lg shadow-lg'
-                : 'bg-transparent'
-            }`}>
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16 lg:h-20">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 group">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isScrolled ? 'bg-blue-600' : 'bg-white/20 backdrop-blur-lg'
-                            }`}>
-                            <HiAcademicCap className={`w-6 h-6 ${isScrolled ? 'text-white' : 'text-white'}`} />
+                        <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                            <HiAcademicCap className="w-6 h-6 text-white" />
                         </div>
-                        <span className={`text-xl font-bold transition-colors ${isScrolled ? 'text-gray-900' : 'text-white'
-                            }`}>
+                        <span className="text-xl font-bold text-white">
                             LearnHub
                         </span>
                     </Link>
@@ -96,9 +79,9 @@ const Navbar = () => {
                             <Link
                                 key={link.path}
                                 to={link.path}
-                                className={`font-medium transition-colors hover:text-blue-500 ${location.pathname === link.path
-                                        ? (isScrolled ? 'text-blue-600' : 'text-white')
-                                        : (isScrolled ? 'text-gray-600' : 'text-white/80')
+                                className={`font-medium transition-colors hover:text-white ${location.pathname === link.path
+                                    ? 'text-white'
+                                    : 'text-blue-100'
                                     }`}
                             >
                                 {link.name}
@@ -112,25 +95,20 @@ const Navbar = () => {
                             <div className="relative profile-dropdown">
                                 <button
                                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                                    className={`flex items-center gap-3 px-4 py-2 rounded-xl transition-all ${isScrolled
-                                            ? 'bg-gray-100 hover:bg-gray-200'
-                                            : 'bg-white/20 backdrop-blur-lg hover:bg-white/30'
-                                        }`}
+                                    className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 transition-all"
                                 >
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isScrolled ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'
-                                        }`}>
+                                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-blue-600 font-medium">
                                         {user?.name?.charAt(0).toUpperCase() || 'U'}
                                     </div>
                                     <div className="hidden sm:block text-left">
-                                        <div className={`text-sm font-semibold ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
+                                        <div className="text-sm font-semibold text-white">
                                             {user?.name?.split(' ')[0] || 'User'}
                                         </div>
-                                        <div className={`text-xs capitalize ${isScrolled ? 'text-gray-500' : 'text-white/70'}`}>
+                                        <div className="text-xs capitalize text-blue-100">
                                             {user?.role}
                                         </div>
                                     </div>
-                                    <HiChevronDown className={`w-4 h-4 transition-transform ${isProfileDropdownOpen ? 'rotate-180' : ''
-                                        } ${isScrolled ? 'text-gray-500' : 'text-white/70'}`} />
+                                    <HiChevronDown className={`w-4 h-4 text-blue-100 transition-transform ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
                                 </button>
 
                                 {/* Dropdown Menu */}
@@ -153,22 +131,6 @@ const Navbar = () => {
                                                 <HiViewGrid className="w-5 h-5 text-gray-400" />
                                                 Dashboard
                                             </Link>
-                                            <Link
-                                                to="/profile"
-                                                onClick={() => setIsProfileDropdownOpen(false)}
-                                                className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors"
-                                            >
-                                                <HiUser className="w-5 h-5 text-gray-400" />
-                                                My Profile
-                                            </Link>
-                                            <Link
-                                                to="/settings"
-                                                onClick={() => setIsProfileDropdownOpen(false)}
-                                                className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors"
-                                            >
-                                                <HiCog className="w-5 h-5 text-gray-400" />
-                                                Settings
-                                            </Link>
                                         </div>
 
                                         <div className="pt-2 border-t border-gray-100">
@@ -187,19 +149,13 @@ const Navbar = () => {
                             <div className="flex items-center gap-3">
                                 <Link
                                     to="/login"
-                                    className={`hidden sm:block font-medium px-4 py-2 rounded-xl transition-colors ${isScrolled
-                                            ? 'text-gray-600 hover:text-blue-600'
-                                            : 'text-white hover:bg-white/10'
-                                        }`}
+                                    className="hidden sm:block font-medium px-4 py-2 rounded-xl text-blue-100 hover:text-white transition-colors"
                                 >
                                     Sign In
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className={`font-medium px-5 py-2.5 rounded-xl transition-all ${isScrolled
-                                            ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                            : 'bg-white text-blue-600 hover:bg-yellow-300 hover:text-blue-700'
-                                        }`}
+                                    className="font-medium px-5 py-2.5 rounded-xl bg-white text-blue-600 hover:bg-blue-50 transition-all"
                                 >
                                     Get Started
                                 </Link>
@@ -209,10 +165,7 @@ const Navbar = () => {
                         {/* Mobile Menu Button */}
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className={`lg:hidden p-2 rounded-xl transition-colors ${isScrolled
-                                    ? 'text-gray-600 hover:bg-gray-100'
-                                    : 'text-white hover:bg-white/10'
-                                }`}
+                            className="lg:hidden p-2 rounded-xl text-white hover:bg-white/20 transition-colors"
                         >
                             {isMobileMenuOpen ? <HiX className="w-6 h-6" /> : <HiMenu className="w-6 h-6" />}
                         </button>
@@ -230,8 +183,8 @@ const Navbar = () => {
                                 to={link.path}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className={`block px-4 py-3 rounded-xl font-medium transition-colors ${location.pathname === link.path
-                                        ? 'bg-blue-50 text-blue-600'
-                                        : 'text-gray-600 hover:bg-gray-50'
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-600 hover:bg-gray-50'
                                     }`}
                             >
                                 {link.name}

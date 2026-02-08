@@ -37,16 +37,26 @@ const AdminDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            // Fetch pending courses
-            const coursesRes = await api.get('/courses/admin/pending');
-            setPendingCourses(coursesRes.data.data || []);
+            // Fetch pending courses, all courses, users, and enrollment stats in parallel
+            const [pendingRes, usersRes, coursesRes, enrollmentStatsRes] = await Promise.all([
+                api.get('/courses/admin/pending'),
+                api.get('/auth/users'),
+                api.get('/courses'),
+                api.get('/enrollments/admin/stats')
+            ]);
 
-            // In a real app, you'd have an admin stats endpoint
+            const pendingData = pendingRes.data.data || [];
+            const usersData = usersRes.data.data || [];
+            const coursesData = coursesRes.data.data || [];
+            const enrollmentStats = enrollmentStatsRes.data.data || { total: 0 };
+
+            setPendingCourses(pendingData);
+
             setStats({
-                totalUsers: 156,
-                totalCourses: 48,
-                pendingApprovals: coursesRes.data.data?.length || 0,
-                totalEnrollments: 892
+                totalUsers: usersData.length,
+                totalCourses: coursesData.length,
+                pendingApprovals: pendingData.length,
+                totalEnrollments: enrollmentStats.total
             });
         } catch (error) {
             console.error('Error fetching dashboard data:', error);
