@@ -215,8 +215,8 @@ const MyLearning = () => {
                                     <div className="w-full bg-gray-100 rounded-full h-2">
                                         <div
                                             className={`h-2 rounded-full transition-all ${enrollment.progress === 100
-                                                    ? 'bg-green-500'
-                                                    : 'bg-gradient-to-r from-blue-500 to-purple-500'
+                                                ? 'bg-green-500'
+                                                : 'bg-gradient-to-r from-blue-500 to-purple-500'
                                                 }`}
                                             style={{ width: `${enrollment.progress || 0}%` }}
                                         ></div>

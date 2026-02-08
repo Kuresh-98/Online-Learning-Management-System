@@ -14,26 +14,37 @@ connectDB();
 // Initialize Express app
 const app = express();
 
-// CORS Configuration
-const allowedOrigins = [
-    process.env.FRONTEND_URL,
-    'http://localhost:3000',
-    'http://localhost:3001'
-].filter(Boolean);
-
+// CORS Configuration - Allow all origins for Vercel deployment
 const corsOptions = {
-    origin: process.env.NODE_ENV === 'production' 
-        ? allowedOrigins 
-        : '*',
+    origin: function (origin, callback) {
+        // Allow requests with no origin (mobile apps, Postman, etc.)
+        if (!origin) return callback(null, true);
+
+        const allowedOrigins = [
+            'https://online-learning-management-system-e.vercel.app',
+            'https://online-learning-management-system-backend.vercel.app',
+            process.env.FRONTEND_URL,
+            'http://localhost:3000',
+            'http://localhost:3001'
+        ].filter(Boolean);
+
+        if (allowedOrigins.includes(origin) || origin.includes('vercel.app')) {
+            callback(null, true);
+        } else {
+            callback(null, true); // Allow all for now
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    optionsSuccessStatus: 200
 };
 
 // Middleware
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Handle preflight requests
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-app.use(cors(corsOptions)); // Enable Cross-Origin Resource Sharing
 
 // Simple test route
 app.get('/', (req, res) => {
