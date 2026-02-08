@@ -75,7 +75,7 @@ const Register = () => {
             toast.success('Account created successfully! 🎉');
             navigate('/dashboard', { replace: true });
         } else {
-            toast.error(result.error);
+            toast.error(result.message);
         }
 
         setIsLoading(false);
@@ -113,20 +113,20 @@ const Register = () => {
                     </div>
 
                     <h2 className="text-3xl font-bold mb-6">
-                        Join our community of learners
+                        Join our learning community
                     </h2>
 
                     <p className="text-blue-100 mb-8">
-                        Create your free account and start learning today. Access thousands of courses from world-class instructors.
+                        Create your free account and start learning today. Access quality courses from experienced instructors.
                     </p>
 
                     {/* Benefits List */}
                     <div className="space-y-4">
                         {[
-                            'Access to 500+ courses',
+                            'Access to quality courses',
                             'Learn at your own pace',
-                            'Earn certificates',
-                            'Community support'
+                            'Track your progress',
+                            'Get help when stuck'
                         ].map((benefit, index) => (
                             <div key={index} className="flex items-center gap-3 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                                 <div className="w-6 h-6 bg-green-400/30 rounded-full flex items-center justify-center">
@@ -168,8 +168,8 @@ const Register = () => {
                                         type="button"
                                         onClick={() => setFormData({ ...formData, role: role.value })}
                                         className={`p-4 rounded-xl border-2 text-left transition-all ${formData.role === role.value
-                                                ? 'border-blue-500 bg-blue-50'
-                                                : 'border-gray-200 hover:border-gray-300'
+                                            ? 'border-blue-500 bg-blue-50'
+                                            : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                     >
                                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2 ${formData.role === role.value ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-500'

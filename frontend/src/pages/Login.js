@@ -44,7 +44,7 @@ const Login = () => {
             toast.success('Welcome back! 🎉');
             navigate(from, { replace: true });
         } else {
-            toast.error(result.error);
+            toast.error(result.message);
         }
 
         setIsLoading(false);

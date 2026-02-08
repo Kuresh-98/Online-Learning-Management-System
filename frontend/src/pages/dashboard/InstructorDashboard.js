@@ -35,7 +35,7 @@ const InstructorDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const res = await api.get('/courses/instructor');
+            const res = await api.get('/courses/instructor/my-courses');
             setCourses(res.data.data || []);
 
             // Calculate stats

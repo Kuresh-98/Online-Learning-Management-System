@@ -38,7 +38,7 @@ const AdminDashboard = () => {
     const fetchDashboardData = async () => {
         try {
             // Fetch pending courses
-            const coursesRes = await api.get('/courses/pending');
+            const coursesRes = await api.get('/courses/admin/pending');
             setPendingCourses(coursesRes.data.data || []);
 
             // In a real app, you'd have an admin stats endpoint
@@ -57,7 +57,7 @@ const AdminDashboard = () => {
 
     const handleApprove = async (courseId) => {
         try {
-            await api.put(`/courses/${courseId}/approve`);
+            await api.patch(`/courses/${courseId}/approve`);
             toast.success('Course approved successfully!');
             setPendingCourses(prev => prev.filter(c => c._id !== courseId));
             setStats(prev => ({ ...prev, pendingApprovals: prev.pendingApprovals - 1 }));

@@ -57,7 +57,7 @@ const CourseDetail = () => {
 
     const checkEnrollment = async () => {
         try {
-            const res = await api.get('/enrollments/my');
+            const res = await api.get('/enrollments/my-courses');
             const enrolled = res.data.data?.some(e => e.course?._id === id);
             setIsEnrolled(enrolled);
         } catch (error) {
@@ -74,7 +74,7 @@ const CourseDetail = () => {
 
         setEnrolling(true);
         try {
-            await api.post(`/enrollments/${id}`);
+            await api.post('/enrollments', { courseId: id });
             toast.success('Successfully enrolled in the course! 🎉');
             setIsEnrolled(true);
         } catch (error) {

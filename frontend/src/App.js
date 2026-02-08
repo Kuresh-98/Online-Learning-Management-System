@@ -17,6 +17,21 @@ import CourseDetail from './pages/CourseDetail';
 
 // Dashboard Pages
 import Dashboard from './pages/dashboard/Dashboard';
+import MyLearning from './pages/dashboard/MyLearning';
+import CreateCourse from './pages/dashboard/CreateCourse';
+import MyCourses from './pages/dashboard/MyCourses';
+
+// Admin Pages
+import AdminUsers from './pages/dashboard/AdminUsers';
+import AdminCourses from './pages/dashboard/AdminCourses';
+import AdminApprovals from './pages/dashboard/AdminApprovals';
+import Reports from './pages/dashboard/Reports';
+
+// Shared Pages
+import Analytics from './pages/dashboard/Analytics';
+import Messages from './pages/dashboard/Messages';
+import InstructorStudents from './pages/dashboard/InstructorStudents';
+import StudentReviews from './pages/dashboard/StudentReviews';
 
 // Import CSS
 import './index.css';
@@ -91,7 +106,25 @@ function App() {
             }
           >
             <Route index element={<Dashboard />} />
-            {/* Add more dashboard sub-routes here */}
+
+            {/* Student Routes */}
+            <Route path="my-learning" element={<MyLearning />} />
+            <Route path="reviews" element={<StudentReviews />} />
+
+            {/* Instructor Routes */}
+            <Route path="create-course" element={<CreateCourse />} />
+            <Route path="my-courses" element={<MyCourses />} />
+            <Route path="students" element={<InstructorStudents />} />
+
+            {/* Admin Routes */}
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="courses" element={<AdminCourses />} />
+            <Route path="approvals" element={<AdminApprovals />} />
+            <Route path="reports" element={<Reports />} />
+
+            {/* Shared Routes */}
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="messages" element={<Messages />} />
           </Route>
 
           {/* 404 Not Found */}

@@ -4,10 +4,6 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
-
-
-
-
 // Load environment variables from .env file
 dotenv.config();
 
@@ -18,10 +14,18 @@ connectDB();
 // Initialize Express app
 const app = express();
 
+// CORS Configuration
+const corsOptions = {
+    origin: process.env.CORS_ORIGIN || '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 // Middleware
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-app.use(cors()); // Enable Cross-Origin Resource Sharing (allows React to communicate)
+app.use(cors(corsOptions)); // Enable Cross-Origin Resource Sharing
 
 // Simple test route
 app.get('/', (req, res) => {

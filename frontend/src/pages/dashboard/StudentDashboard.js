@@ -29,7 +29,7 @@ const StudentDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const res = await api.get('/enrollments/my');
+            const res = await api.get('/enrollments/my-courses');
             setEnrollments(res.data.data || []);
 
             // Calculate stats

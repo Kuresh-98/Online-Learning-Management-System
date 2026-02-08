@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
     HiAcademicCap,
     HiPlay,
@@ -11,51 +12,53 @@ import {
     HiClock,
     HiShieldCheck,
     HiChevronRight,
-    HiBookOpen
+    HiBookOpen,
+    HiViewGrid
 } from 'react-icons/hi';
 import { FaGraduationCap, FaLaptopCode, FaPalette, FaChartLine } from 'react-icons/fa';
 
 const Home = () => {
     const [isVisible, setIsVisible] = useState(false);
+    const { isAuthenticated, user } = useAuth();
 
     useEffect(() => {
         setIsVisible(true);
     }, []);
 
     const categories = [
-        { icon: <FaLaptopCode />, name: 'Development', courses: 120, color: 'from-blue-500 to-cyan-400' },
-        { icon: <FaPalette />, name: 'Design', courses: 85, color: 'from-pink-500 to-rose-400' },
-        { icon: <FaChartLine />, name: 'Business', courses: 95, color: 'from-green-500 to-emerald-400' },
-        { icon: <FaGraduationCap />, name: 'Academic', courses: 110, color: 'from-purple-500 to-violet-400' },
+        { icon: <FaLaptopCode />, name: 'Development', courses: 24, color: 'from-blue-500 to-cyan-400' },
+        { icon: <FaPalette />, name: 'Design', courses: 18, color: 'from-pink-500 to-rose-400' },
+        { icon: <FaChartLine />, name: 'Business', courses: 15, color: 'from-green-500 to-emerald-400' },
+        { icon: <FaGraduationCap />, name: 'Academic', courses: 21, color: 'from-purple-500 to-violet-400' },
     ];
 
     const featuredCourses = [
         {
             id: 1,
-            title: 'Complete React Developer',
-            instructor: 'Sarah Johnson',
-            rating: 4.9,
-            students: 12500,
+            title: 'Web Development Bootcamp',
+            instructor: 'Rahul Sharma',
+            rating: 4.7,
+            students: 342,
             price: 'Free',
             image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400',
-            tag: 'Bestseller'
-        },
-        {
-            id: 2,
-            title: 'Node.js & MongoDB Mastery',
-            instructor: 'Mike Chen',
-            rating: 4.8,
-            students: 8900,
-            price: 'Free',
-            image: 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400',
             tag: 'Popular'
         },
         {
+            id: 2,
+            title: 'Backend with Node.js',
+            instructor: 'Priya Patel',
+            rating: 4.5,
+            students: 218,
+            price: 'Free',
+            image: 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400',
+            tag: 'Trending'
+        },
+        {
             id: 3,
-            title: 'UI/UX Design Fundamentals',
-            instructor: 'Emily Davis',
-            rating: 4.9,
-            students: 15200,
+            title: 'UI Design Essentials',
+            instructor: 'Amit Kumar',
+            rating: 4.6,
+            students: 156,
             price: 'Free',
             image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400',
             tag: 'New'
@@ -64,24 +67,24 @@ const Home = () => {
 
     const testimonials = [
         {
-            name: 'Alex Thompson',
-            role: 'Software Developer at Google',
+            name: 'Vikram Reddy',
+            role: 'Frontend Developer',
             image: 'https://randomuser.me/api/portraits/men/32.jpg',
-            text: 'LearnHub transformed my career. The courses are incredibly well-structured and the instructors are top-notch.',
+            text: 'Really helpful for getting practical skills. The project-based learning approach worked well for me.',
             rating: 5
         },
         {
-            name: 'Jessica Miller',
-            role: 'UI Designer at Apple',
+            name: 'Sneha Gupta',
+            role: 'Graphic Designer',
             image: 'https://randomuser.me/api/portraits/women/44.jpg',
-            text: 'The best learning platform I\'ve ever used. The quality of content is unmatched.',
+            text: 'Found exactly what I needed to upskill. Clean interface and easy to follow courses.',
             rating: 5
         },
         {
-            name: 'David Park',
-            role: 'Full Stack Developer',
+            name: 'Arjun Mehta',
+            role: 'Computer Science Student',
             image: 'https://randomuser.me/api/portraits/men/67.jpg',
-            text: 'From zero to hero in 6 months. LearnHub made it possible with their amazing curriculum.',
+            text: 'Great platform for students. The free courses helped me learn alongside my college studies.',
             rating: 5
         },
     ];
@@ -114,18 +117,30 @@ const Home = () => {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <Link
-                                to="/login"
-                                className="px-4 py-2 text-gray-700 font-medium hover:text-gray-900 transition-colors"
-                            >
-                                Sign In
-                            </Link>
-                            <Link
-                                to="/register"
-                                className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:-translate-y-0.5"
-                            >
-                                Get Started
-                            </Link>
+                            {isAuthenticated ? (
+                                <Link
+                                    to="/dashboard"
+                                    className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:-translate-y-0.5"
+                                >
+                                    <HiViewGrid className="w-4 h-4" />
+                                    Dashboard
+                                </Link>
+                            ) : (
+                                <>
+                                    <Link
+                                        to="/login"
+                                        className="px-4 py-2 text-gray-700 font-medium hover:text-gray-900 transition-colors"
+                                    >
+                                        Sign In
+                                    </Link>
+                                    <Link
+                                        to="/register"
+                                        className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-full hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 hover:-translate-y-0.5"
+                                    >
+                                        Get Started
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -186,7 +201,7 @@ const Home = () => {
                                     ))}
                                 </div>
                                 <span className="text-sm text-gray-600">
-                                    <strong className="text-gray-900">50K+</strong> active learners
+                                    <strong className="text-gray-900">500+</strong> active learners
                                 </span>
                             </div>
                             <div className="flex items-center gap-2">
@@ -196,7 +211,7 @@ const Home = () => {
                                     ))}
                                 </div>
                                 <span className="text-sm text-gray-600">
-                                    <strong className="text-gray-900">4.9</strong> average rating
+                                    <strong className="text-gray-900">4.6</strong> average rating
                                 </span>
                             </div>
                         </div>
