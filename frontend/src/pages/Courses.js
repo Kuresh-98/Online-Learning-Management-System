@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import api from '../utils/api';
 import {
     HiBookOpen,
@@ -9,7 +9,6 @@ import {
     HiClock,
     HiUsers,
     HiPlay,
-    HiAcademicCap,
     HiChevronDown,
     HiX
 } from 'react-icons/hi';
@@ -24,7 +23,6 @@ const Courses = () => {
         sort: 'newest'
     });
     const [showFilters, setShowFilters] = useState(false);
-    // const [searchParams] = useSearchParams();
 
     const categories = [
         'All Categories',
@@ -46,6 +44,7 @@ const Courses = () => {
 
     useEffect(() => {
         fetchCourses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters]);
 
     const fetchCourses = async () => {

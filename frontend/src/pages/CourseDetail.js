@@ -23,7 +23,7 @@ import {
 const CourseDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const [course, setCourse] = useState(null);
     const [lessons, setLessons] = useState([]);
@@ -37,6 +37,7 @@ const CourseDetail = () => {
         if (isAuthenticated) {
             checkEnrollment();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, isAuthenticated]);
 
     const fetchCourseDetails = async () => {

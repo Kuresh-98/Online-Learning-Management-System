@@ -11,7 +11,6 @@ import {
     HiArrowRight,
     HiCheck,
     HiX,
-    HiTrendingUp,
     HiChartBar,
     HiClock,
     HiCheckCircle,

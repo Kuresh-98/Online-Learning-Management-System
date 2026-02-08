@@ -4,7 +4,6 @@ import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import {
     HiBookOpen,
-    HiPhotograph,
     HiTag,
     HiAcademicCap,
     HiCurrencyDollar,
@@ -64,7 +63,7 @@ const CreateCourse = () => {
         setIsSubmitting(true);
 
         try {
-            const res = await api.post('/courses', formData);
+            await api.post('/courses', formData);
             toast.success('Course created successfully! It will be reviewed by admin.');
             navigate('/dashboard');
         } catch (error) {

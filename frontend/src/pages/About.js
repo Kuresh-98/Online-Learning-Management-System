@@ -7,7 +7,6 @@ import {
     HiLightBulb,
     HiHeart,
     HiShieldCheck,
-    HiStar,
     HiArrowRight
 } from 'react-icons/hi';
 

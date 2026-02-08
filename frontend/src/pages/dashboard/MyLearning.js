@@ -7,7 +7,6 @@ import {
     HiClock,
     HiCheckCircle,
     HiSearch,
-    HiFilter,
     HiChevronDown
 } from 'react-icons/hi';
 

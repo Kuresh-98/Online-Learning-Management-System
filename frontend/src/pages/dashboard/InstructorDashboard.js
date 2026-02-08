@@ -5,7 +5,6 @@ import api from '../../utils/api';
 import {
     HiBookOpen,
     HiUsers,
-    HiCurrencyDollar,
     HiStar,
     HiPlus,
     HiArrowRight,
@@ -14,8 +13,7 @@ import {
     HiTrendingUp,
     HiChartBar,
     HiClock,
-    HiCheckCircle,
-    HiXCircle
+    HiCheckCircle
 } from 'react-icons/hi';
 
 const InstructorDashboard = () => {

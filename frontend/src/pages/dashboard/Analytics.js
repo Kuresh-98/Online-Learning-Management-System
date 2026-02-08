@@ -9,7 +9,7 @@ import {
 } from 'react-icons/hi';
 
 const Analytics = () => {
-    const { user, hasRole } = useAuth();
+    const { hasRole } = useAuth();
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalUsers: 0,
@@ -21,6 +21,7 @@ const Analytics = () => {
 
     useEffect(() => {
         fetchAnalytics();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchAnalytics = async () => {

@@ -6,7 +6,6 @@ import {
     HiUsers,
     HiStar,
     HiArrowRight,
-    HiSparkles,
     HiGlobe,
     HiClock,
     HiShieldCheck,

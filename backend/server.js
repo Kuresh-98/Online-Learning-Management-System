@@ -15,8 +15,16 @@ connectDB();
 const app = express();
 
 // CORS Configuration
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'http://localhost:3000',
+    'http://localhost:3001'
+].filter(Boolean);
+
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN || '*',
+    origin: process.env.NODE_ENV === 'production' 
+        ? allowedOrigins 
+        : '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -63,19 +71,23 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
-// Get PORT from environment variables or default to 5000
-const PORT = process.env.PORT || 5000;
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`
+// Export for Vercel serverless
+module.exports = app;
+
+// Only start server if not in Vercel serverless environment
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`
   
      🎓 LMS Server is Running!                                   
      📡 Port: ${PORT}                                            
      🌍 Environment: ${process.env.NODE_ENV || 'development'}    
      🔗 URL: http://localhost:${PORT}                            
   `);
-});
+    });
+}
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
