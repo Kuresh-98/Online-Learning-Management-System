@@ -30,6 +30,12 @@ const lessonSchema = new mongoose.Schema(
             type: String,
             maxlength: [2000, 'Description cannot exceed 2000 characters']
         },
+        // Video summary
+        summary: {
+            type: String,
+            default: '',
+            maxlength: 20000
+        },
 
         // Course reference (which course this lesson belongs to)
         course: {

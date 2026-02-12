@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
+import Learn from './pages/Learn';
 import About from './pages/About';
 import Contact from './pages/Contact';
 
@@ -78,6 +79,7 @@ function App() {
           <Route path="/" element={<><Navbar /><Home /><Footer /></>} />
           <Route path="/courses" element={<><Navbar /><Courses /><Footer /></>} />
           <Route path="/course/:id" element={<><Navbar /><CourseDetail /><Footer /></>} />
+          <Route path="/course/:id/learn" element={<><Navbar /><Learn /><Footer /></>} />
           <Route path="/about" element={<><Navbar /><About /><Footer /></>} />
           <Route path="/contact" element={<><Navbar /><Contact /><Footer /></>} />
 
