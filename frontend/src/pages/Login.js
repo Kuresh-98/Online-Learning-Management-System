@@ -21,7 +21,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const { login } = useAuth();
+    const { login, googleLogin } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -184,6 +184,7 @@ const Login = () => {
                                         // Save token and user to localStorage
                                         localStorage.setItem('token', data.data.token);
                                         localStorage.setItem('user', JSON.stringify(data.data));
+                                        googleLogin();
                                         toast.success('Google Sign-In successful!');
                                         navigate('/dashboard', { replace: true });
                                     } else {
