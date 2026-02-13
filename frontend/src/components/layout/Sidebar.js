@@ -7,6 +7,7 @@ import {
     HiBookOpen,
     HiUsers,
     HiCog,
+    HiLockClosed,
     HiLogout,
     HiChevronLeft,
     HiChevronRight,
@@ -195,6 +196,16 @@ const Sidebar = () => {
                 >
                     <HiCog className="w-5 h-5 text-gray-400" />
                     {!isCollapsed && <span className="font-medium">Settings</span>}
+                </Link>
+
+                <Link
+                    to="/dashboard/change-password"
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors ${isCollapsed ? 'justify-center' : ''
+                        }`}
+                    title={isCollapsed ? 'Change Password' : ''}
+                >
+                    <HiLockClosed className="w-5 h-5 text-gray-400" />
+                    {!isCollapsed && <span className="font-medium">Change Password</span>}
                 </Link>
 
                 <button

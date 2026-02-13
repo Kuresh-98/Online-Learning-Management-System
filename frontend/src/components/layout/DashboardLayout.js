@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { HiBell, HiSearch, HiMenuAlt2 } from 'react-icons/hi';
+import { HiSearch, HiMenuAlt2 } from 'react-icons/hi';
 import { useAuth } from '../../context/AuthContext';
 
 const DashboardLayout = () => {
@@ -40,11 +40,7 @@ const DashboardLayout = () => {
 
                         {/* Right Side */}
                         <div className="flex items-center gap-4">
-                            {/* Notifications */}
-                            <button className="relative p-2.5 hover:bg-gray-100 rounded-xl transition-colors">
-                                <HiBell className="w-5 h-5 text-gray-500" />
-                                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-                            </button>
+                            {/* Notifications removed */}
 
                             {/* User Info */}
                             <div className="flex items-center gap-3 pl-4 border-l border-gray-200">

@@ -69,6 +69,16 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: true
         }
+        ,
+        // Password reset token and expiry (for forgot password flow)
+        resetToken: {
+            type: String,
+            default: undefined
+        },
+        resetTokenExpires: {
+            type: Date,
+            default: undefined
+        }
     },
     {
         timestamps: true // Automatically adds createdAt and updatedAt

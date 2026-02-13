@@ -18,6 +18,8 @@ import CourseDetail from './pages/CourseDetail';
 import Learn from './pages/Learn';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 // Dashboard Pages
 import Dashboard from './pages/dashboard/Dashboard';
@@ -34,6 +36,7 @@ import AdminApprovals from './pages/dashboard/AdminApprovals';
 import Analytics from './pages/dashboard/Analytics';
 import InstructorStudents from './pages/dashboard/InstructorStudents';
 import StudentReviews from './pages/dashboard/StudentReviews';
+import ChangePassword from './pages/dashboard/ChangePassword';
 
 // Import CSS
 import './index.css';
@@ -100,6 +103,22 @@ function App() {
               </PublicRoute>
             }
           />
+          <Route
+            path="/forgot-password"
+            element={
+              <PublicRoute>
+                <ForgotPassword />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <PublicRoute>
+                <ResetPassword />
+              </PublicRoute>
+            }
+          />
 
           {/* Protected Dashboard Routes */}
           <Route
@@ -128,6 +147,7 @@ function App() {
 
             {/* Shared Routes */}
             <Route path="analytics" element={<Analytics />} />
+            <Route path="change-password" element={<ChangePassword />} />
           </Route>
 
           {/* 404 Not Found */}
