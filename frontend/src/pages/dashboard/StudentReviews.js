@@ -54,44 +54,46 @@ const StudentReviews = () => {
         }
     };
 
-    const handleSubmitReview = () => {
+    const handleSubmitReview = async () => {
         if (!selectedCourse || !reviewText.trim()) {
             toast.error('Please select a course and write a review');
             return;
         }
 
-        const course = enrolledCourses.find(e => e.course?._id === selectedCourse);
+        try {
+            // Find the enrollment record for this selected course
+            const enrollment = enrolledCourses.find(e => e.course?._id === selectedCourse) || enrolledCourses.find(e => e._id === selectedCourse);
 
-        if (editingReview) {
-            // Update existing review
-            setReviews(reviews.map(r =>
-                r.id === editingReview.id
-                    ? { ...r, rating, text: reviewText }
-                    : r
-            ));
-            toast.success('Review updated successfully');
-        } else {
-            // Add new review
-            const newReview = {
-                id: Date.now(),
-                courseId: selectedCourse,
-                courseName: course?.course?.title,
-                courseImage: course?.course?.thumbnail,
+            // If editingReview exists, use its id (it's the enrollment _id)
+            const enrollmentId = editingReview ? editingReview.id : (enrollment?._id);
+            if (!enrollmentId) {
+                throw new Error('Enrollment not found for selected course');
+            }
+
+            // Persist review to backend
+            await api.put(`/enrollments/${enrollmentId}/review`, {
                 rating,
-                text: reviewText,
-                createdAt: new Date().toISOString(),
-                helpful: 0
-            };
-            setReviews([newReview, ...reviews]);
-            toast.success('Review submitted successfully');
-        }
+                review: reviewText
+            });
 
-        // Reset form
-        setShowReviewForm(false);
-        setEditingReview(null);
-        setSelectedCourse('');
-        setRating(5);
-        setReviewText('');
+            // Refresh local data from server to keep state consistent
+            await fetchData();
+            // Notify other pages (Home) to refresh reviews list
+            try { window.dispatchEvent(new Event('reviewsUpdated')); } catch (e) { /* ignore */ }
+
+            toast.success(editingReview ? 'Review updated successfully' : 'Review submitted successfully');
+
+            // Reset form
+            setShowReviewForm(false);
+            setEditingReview(null);
+            setSelectedCourse('');
+            setRating(5);
+            setReviewText('');
+        } catch (err) {
+            console.error('Submit review error:', err, err.response?.data || err.message);
+            const message = err.response?.data?.message || err.message || 'Failed to submit review';
+            toast.error(message);
+        }
     };
 
     const handleEditReview = (review) => {
@@ -102,10 +104,18 @@ const StudentReviews = () => {
         setShowReviewForm(true);
     };
 
-    const handleDeleteReview = (reviewId) => {
-        if (window.confirm('Are you sure you want to delete this review?')) {
-            setReviews(reviews.filter(r => r.id !== reviewId));
+    const handleDeleteReview = async (reviewId) => {
+        if (!window.confirm('Are you sure you want to delete this review?')) return;
+
+        try {
+            // The review is stored on the enrollment - clear it via the same endpoint
+            await api.put(`/enrollments/${reviewId}/review`, { rating: null, review: '' });
+            await fetchData();
             toast.success('Review deleted');
+        } catch (err) {
+            console.error('Delete review error:', err, err.response?.data || err.message);
+            const message = err.response?.data?.message || err.message || 'Failed to delete review';
+            toast.error(message);
         }
     };
 

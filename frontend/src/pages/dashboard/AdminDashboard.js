@@ -11,7 +11,6 @@ import {
     HiArrowRight,
     HiCheck,
     HiX,
-    HiChartBar,
     HiClock,
     HiCheckCircle,
     HiEye,
@@ -50,7 +49,7 @@ const AdminDashboard = () => {
             const enrollmentStats = enrollmentStatsRes.data.data || { total: 0 };
 
             setPendingCourses(pendingData);
-
+    
             setStats({
                 totalUsers: usersData.length,
                 totalCourses: coursesData.length,
@@ -113,7 +112,7 @@ const AdminDashboard = () => {
             value: stats.totalEnrollments,
             icon: <HiAcademicCap className="w-6 h-6" />,
             bgColor: 'bg-purple-500',
-            link: '/dashboard/analytics'
+            link: '/dashboard/enrollments'
         }
     ];
 
@@ -287,21 +286,22 @@ const AdminDashboard = () => {
                     </div>
                 </Link>
 
+                {/* Enrollment History Quick Action */}
                 <Link
-                    to="/dashboard/analytics"
+                    to="/dashboard/enrollments"
                     className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-6 text-white hover:shadow-lg transition-all"
                 >
                     <div className="flex items-center gap-4">
                         <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
-                            <HiChartBar className="w-7 h-7" />
+                            <HiAcademicCap className="w-7 h-7" />
                         </div>
                         <div>
-                            <h3 className="font-bold text-lg mb-1">Analytics</h3>
-                            <p className="text-purple-100 text-sm">View platform analytics</p>
+                            <h3 className="font-bold text-lg mb-1">Enrollment History</h3>
+                            <p className="text-purple-100 text-sm">View all enrollments</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-2 mt-4 text-sm font-medium">
-                        View Analytics
+                        View Enrollments
                         <HiArrowRight className="w-4 h-4" />
                     </div>
                 </Link>

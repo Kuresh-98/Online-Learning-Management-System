@@ -6,14 +6,12 @@ import {
     HiViewGrid,
     HiBookOpen,
     HiUsers,
-    HiCog,
     HiLockClosed,
     HiLogout,
     HiChevronLeft,
     HiChevronRight,
     HiPlusCircle,
     HiClipboardList,
-    HiChartBar,
     HiUserGroup,
     HiShieldCheck,
     HiStar
@@ -59,9 +57,9 @@ const Sidebar = () => {
                     icon: <HiShieldCheck className="w-5 h-5" />
                 },
                 {
-                    name: 'Analytics',
-                    path: '/dashboard/analytics',
-                    icon: <HiChartBar className="w-5 h-5" />
+                    name: 'Enrollment History',
+                    path: '/dashboard/enrollments',
+                    icon: <HiAcademicCap className="w-5 h-5" />
                 }
             ];
         }
@@ -84,11 +82,7 @@ const Sidebar = () => {
                     path: '/dashboard/students',
                     icon: <HiUserGroup className="w-5 h-5" />
                 },
-                {
-                    name: 'Analytics',
-                    path: '/dashboard/analytics',
-                    icon: <HiChartBar className="w-5 h-5" />
-                }
+                // Instructor does not have platform analytics here
             ];
         }
 

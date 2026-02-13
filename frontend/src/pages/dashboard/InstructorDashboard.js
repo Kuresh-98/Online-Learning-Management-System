@@ -11,7 +11,6 @@ import {
     HiEye,
     HiPencil,
     HiTrendingUp,
-    HiChartBar,
     HiClock,
     HiCheckCircle
 } from 'react-icons/hi';
@@ -251,26 +250,7 @@ const InstructorDashboard = () => {
             </div>
 
             {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-6 text-white">
-                    <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
-                            <HiChartBar className="w-7 h-7" />
-                        </div>
-                        <div>
-                            <h3 className="font-bold text-lg mb-1">Analytics</h3>
-                            <p className="text-blue-100 text-sm">View detailed course analytics</p>
-                        </div>
-                    </div>
-                    <Link
-                        to="/dashboard/analytics"
-                        className="inline-flex items-center gap-2 mt-4 text-sm font-medium hover:underline"
-                    >
-                        View Analytics
-                        <HiArrowRight className="w-4 h-4" />
-                    </Link>
-                </div>
-
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
                 <div className="bg-gradient-to-br from-orange-400 to-pink-500 rounded-2xl p-6 text-white">
                     <div className="flex items-center gap-4">
                         <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">

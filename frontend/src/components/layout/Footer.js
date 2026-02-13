@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { HiAcademicCap, HiMail, HiPhone, HiLocationMarker } from 'react-icons/hi';
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa';
+
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -28,13 +28,7 @@ const Footer = () => {
         { name: 'Terms of Service', path: '/terms' }
     ];
 
-    const socialLinks = [
-        { icon: <FaFacebookF className="w-4 h-4" />, href: '#', label: 'Facebook' },
-        { icon: <FaTwitter className="w-4 h-4" />, href: '#', label: 'Twitter' },
-        { icon: <FaLinkedinIn className="w-4 h-4" />, href: '#', label: 'LinkedIn' },
-        { icon: <FaInstagram className="w-4 h-4" />, href: '#', label: 'Instagram' },
-        { icon: <FaYoutube className="w-4 h-4" />, href: '#', label: 'YouTube' }
-    ];
+
 
     return (
         <footer className="bg-gray-900 text-gray-300">

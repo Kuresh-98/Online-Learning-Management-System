@@ -4,7 +4,6 @@ import toast from 'react-hot-toast';
 import {
     HiUsers,
     HiSearch,
-    HiDotsVertical,
     HiShieldCheck,
     HiAcademicCap,
     HiUserCircle,

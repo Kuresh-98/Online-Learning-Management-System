@@ -26,6 +26,9 @@ const Home = () => {
         setIsVisible(true);
         fetchFeaturedCourses();
         fetchReviews();
+        const onReviewsUpdated = () => fetchReviews();
+        window.addEventListener('reviewsUpdated', onReviewsUpdated);
+        return () => window.removeEventListener('reviewsUpdated', onReviewsUpdated);
     }, []);
 
     const fetchFeaturedCourses = async () => {
@@ -113,29 +116,7 @@ const Home = () => {
         { icon: <FaGraduationCap />, name: 'Data Science', courses: 21, color: 'from-purple-500 to-violet-400' },
     ];
 
-    const testimonials = [
-        {
-            name: 'Vikram Reddy',
-            role: 'Frontend Developer',
-            image: 'https://randomuser.me/api/portraits/men/32.jpg',
-            text: 'Really helpful for getting practical skills. The project-based learning approach worked well for me.',
-            rating: 5
-        },
-        {
-            name: 'Sneha Gupta',
-            role: 'Graphic Designer',
-            image: 'https://randomuser.me/api/portraits/women/44.jpg',
-            text: 'Found exactly what I needed to upskill. Clean interface and easy to follow courses.',
-            rating: 5
-        },
-        {
-            name: 'Arjun Mehta',
-            role: 'Computer Science Student',
-            image: 'https://randomuser.me/api/portraits/men/67.jpg',
-            text: 'Great platform for students. The free courses helped me learn alongside my college studies.',
-            rating: 5
-        },
-    ];
+    // ...existing code...
 
     return (
         <div className="min-h-screen bg-white overflow-hidden">
@@ -195,10 +176,10 @@ const Home = () => {
                 <div className="max-w-7xl mx-auto px-6 lg:px-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         {[
-                            { number: '500+', label: 'Quality Courses', icon: <HiBookOpen /> },
-                            { number: '50K+', label: 'Active Students', icon: <HiUsers /> },
-                            { number: '200+', label: 'Expert Instructors', icon: <HiAcademicCap /> },
-                            { number: '95%', label: 'Success Rate', icon: <HiShieldCheck /> },
+                            { number: '15+', label: 'Quality Courses', icon: <HiBookOpen /> },
+                            { number: '100', label: 'Active Students', icon: <HiUsers /> },
+                            { number: '25', label: 'Expert Instructors', icon: <HiAcademicCap /> },
+                            { number: '85%', label: 'Success Rate', icon: <HiShieldCheck /> },
                         ].map((stat, index) => (
                             <div key={index} className="text-center group">
                                 <div className="w-12 h-12 mx-auto mb-4 bg-white/10 rounded-xl flex items-center justify-center text-white/80 group-hover:bg-white/20 transition-colors">

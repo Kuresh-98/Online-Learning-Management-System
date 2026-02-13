@@ -20,6 +20,10 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import Help from './pages/Help';
+import Faqs from './pages/Faqs';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 // Dashboard Pages
 import Dashboard from './pages/dashboard/Dashboard';
@@ -33,7 +37,7 @@ import AdminCourses from './pages/dashboard/AdminCourses';
 import AdminApprovals from './pages/dashboard/AdminApprovals';
 
 // Shared Pages
-import Analytics from './pages/dashboard/Analytics';
+import AdminEnrollmentsList from './pages/dashboard/AdminEnrollmentsList';
 import InstructorStudents from './pages/dashboard/InstructorStudents';
 import StudentReviews from './pages/dashboard/StudentReviews';
 import ChangePassword from './pages/dashboard/ChangePassword';
@@ -78,13 +82,17 @@ function App() {
         />
 
         <Routes>
-          {/* Public Routes with Navbar and Footer */}
+          {/* Public Routes with Navbar (no Footer) */}
           <Route path="/" element={<><Navbar /><Home /><Footer /></>} />
           <Route path="/courses" element={<><Navbar /><Courses /><Footer /></>} />
           <Route path="/course/:id" element={<><Navbar /><CourseDetail /><Footer /></>} />
           <Route path="/course/:id/learn" element={<><Navbar /><Learn /><Footer /></>} />
           <Route path="/about" element={<><Navbar /><About /><Footer /></>} />
           <Route path="/contact" element={<><Navbar /><Contact /><Footer /></>} />
+          <Route path="/help" element={<><Navbar /><Help /></>} />
+          <Route path="/faqs" element={<><Navbar /><Faqs /></>} />
+          <Route path="/privacy" element={<><Navbar /><Privacy /></>} />
+          <Route path="/terms" element={<><Navbar /><Terms /></>} />
 
           {/* Auth Routes (No Navbar) */}
           <Route
@@ -144,9 +152,10 @@ function App() {
             <Route path="users" element={<AdminUsers />} />
             <Route path="courses" element={<AdminCourses />} />
             <Route path="approvals" element={<AdminApprovals />} />
+            <Route path="enrollments" element={<AdminEnrollmentsList />} />
 
             {/* Shared Routes */}
-            <Route path="analytics" element={<Analytics />} />
+            {/* ...existing code... */}
             <Route path="change-password" element={<ChangePassword />} />
           </Route>
 

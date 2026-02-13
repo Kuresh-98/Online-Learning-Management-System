@@ -6,7 +6,6 @@ import {
     HiClock,
     HiChat,
     HiQuestionMarkCircle,
-    HiSupport,
     HiPaperAirplane
 } from 'react-icons/hi';
 import toast from 'react-hot-toast';
