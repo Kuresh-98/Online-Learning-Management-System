@@ -26,6 +26,16 @@ export const AuthProvider = ({ children }) => {
         initAuth();
     }, []);
 
+    // Google login state updater
+    const googleLogin = () => {
+        const savedToken = localStorage.getItem('token');
+        const savedUser = localStorage.getItem('user');
+        if (savedToken && savedUser) {
+            setToken(savedToken);
+            setUser(JSON.parse(savedUser));
+        }
+    };
+
     // Login function
     const login = async (email, password) => {
         try {
@@ -107,6 +117,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         hasRole,
+        googleLogin,
     };
 
     return (
