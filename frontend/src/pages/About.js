@@ -43,29 +43,13 @@ const About = () => {
 
     const team = [
         {
-            name: 'Rajesh Kumar',
+            name: 'KURESH GARBADA',
             role: 'Founder & CEO',
-            image: 'https://randomuser.me/api/portraits/men/32.jpg',
-            bio: 'Former educator with 15+ years in EdTech'
+            image: 'https://res.cloudinary.com/dfsutsd9n/image/upload/v1770970946/photo_shfysz.jpg',
+            bio: 'Web Developer '
         },
-        {
-            name: 'Priya Sharma',
-            role: 'Head of Content',
-            image: 'https://randomuser.me/api/portraits/women/44.jpg',
-            bio: 'Curriculum design specialist from IIT Delhi'
-        },
-        {
-            name: 'Amit Patel',
-            role: 'CTO',
-            image: 'https://randomuser.me/api/portraits/men/52.jpg',
-            bio: 'Full-stack developer, ex-Google engineer'
-        },
-        {
-            name: 'Sneha Reddy',
-            role: 'Head of Operations',
-            image: 'https://randomuser.me/api/portraits/women/68.jpg',
-            bio: 'MBA from ISB, operations excellence expert'
-        }
+
+
     ];
 
     return (
@@ -173,27 +157,43 @@ const About = () => {
             <section className="py-16 lg:py-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
-                        <p className="text-gray-600 max-w-2xl mx-auto">
-                            The passionate people behind Learnify who work tirelessly to make learning accessible.
-                        </p>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Developer</h2>
                     </div>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {team.map((member, index) => (
-                            <div key={index} className="text-center group">
-                                <div className="relative mb-4 inline-block">
-                                    <img
-                                        src={member.image}
-                                        alt={member.name}
-                                        className="w-32 h-32 rounded-full object-cover mx-auto ring-4 ring-gray-100 group-hover:ring-blue-100 transition-all"
-                                    />
+                    {team.length === 1 ? (
+                        <div className="flex justify-center">
+                            {team.map((member, index) => (
+                                <div key={index} className="text-center group">
+                                    <div className="relative mb-6 inline-block">
+                                        <img
+                                            src={member.image}
+                                            alt={member.name}
+                                            className="w-40 h-40 rounded-full object-cover mx-auto ring-4 ring-gray-100 group-hover:ring-blue-100 transition-all"
+                                        />
+                                    </div>
+                                    <h3 className="font-bold text-gray-900">{member.name}</h3>
+                                    <p className="text-blue-600 text-sm mb-2">{member.role}</p>
+                                    <p className="text-gray-500 text-sm">{member.bio}</p>
                                 </div>
-                                <h3 className="font-bold text-gray-900">{member.name}</h3>
-                                <p className="text-blue-600 text-sm mb-2">{member.role}</p>
-                                <p className="text-gray-500 text-sm">{member.bio}</p>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
+                            {team.map((member, index) => (
+                                <div key={index} className="text-center group">
+                                    <div className="relative mb-70 inline-block">
+                                        <img
+                                            src={member.image}
+                                            alt={member.name}
+                                            className="w-32 h-32 rounded-full object-cover mx-auto ring-4 ring-gray-100 group-hover:ring-blue-100 transition-all"
+                                        />
+                                    </div>
+                                    <h3 className="font-bold text-gray-900">{member.name}</h3>
+                                    <p className="text-blue-600 text-sm mb-2">{member.role}</p>
+                                    <p className="text-gray-500 text-sm">{member.bio}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 
