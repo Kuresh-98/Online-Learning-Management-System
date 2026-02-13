@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
-import { HiLockClosed, HiArrowRight } from 'react-icons/hi';
+import { HiArrowRight } from 'react-icons/hi';
 
 const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState('');
