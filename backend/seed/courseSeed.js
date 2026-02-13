@@ -19,19 +19,19 @@ const Course = require('../models/course');
 const instructors = [
     {
         name: 'Rahul Sharma',
-        email: 'rahul.sharma@learnhub.com',
+        email: 'rahul.sharma@learnify.com',
         password: 'Instructor@123',
         role: 'instructor'
     },
     {
         name: 'Priya Patel',
-        email: 'priya.patel@learnhub.com',
+        email: 'priya.patel@learnify.com',
         password: 'Instructor@123',
         role: 'instructor'
     },
     {
         name: 'Amit Kumar',
-        email: 'amit.kumar@learnhub.com',
+        email: 'amit.kumar@learnify.com',
         password: 'Instructor@123',
         role: 'instructor'
     }

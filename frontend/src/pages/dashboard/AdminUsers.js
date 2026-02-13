@@ -27,10 +27,12 @@ const AdminUsers = () => {
         try {
             // Fetch all users from backend
             const res = await api.get('/auth/users');
+            console.debug('getAllUsers response:', res.status, res.data);
             setUsers(res.data.data || []);
         } catch (error) {
-            console.error('Error fetching users:', error);
-            toast.error('Failed to load users');
+            console.error('Error fetching users:', error, error.response?.data || error.message);
+            const message = error.response?.data?.message || error.response?.data?.error || error.message || 'Failed to load users';
+            toast.error(message);
             setUsers([]);
         } finally {
             setLoading(false);
@@ -63,6 +65,39 @@ const AdminUsers = () => {
         const matchesRole = roleFilter === 'all' || user.role === roleFilter;
         return matchesSearch && matchesRole;
     });
+
+    const handleEditUser = async (user) => {
+        try {
+            const newRole = window.prompt('Enter new role for user (student, instructor, admin):', user.role);
+            if (!newRole) return;
+            const isActive = window.confirm('Should this user be active? OK = Active, Cancel = Inactive');
+
+            const res = await api.put(`/auth/users/${user._id}`, { role: newRole, isActive });
+            console.debug('updateUser response:', res.status, res.data);
+            toast.success(res.data.message || 'User updated');
+            // Update local state
+            setUsers(prev => prev.map(u => u._id === user._id ? { ...u, role: res.data.data.role, isActive: res.data.data.isActive } : u));
+        } catch (err) {
+            console.error('Edit user error:', err, err.response?.data || err.message);
+            const message = err.response?.data?.message || err.response?.data?.error || err.message || 'Failed to update user';
+            toast.error(message);
+        }
+    };
+
+    const handleDeleteUser = async (user) => {
+        try {
+            const ok = window.confirm(`Delete user ${user.name}? This action cannot be undone.`);
+            if (!ok) return;
+            const res = await api.delete(`/auth/users/${user._id}`);
+            console.debug('deleteUser response:', res.status, res.data);
+            toast.success(res.data.message || 'User deleted');
+            setUsers(prev => prev.filter(u => u._id !== user._id));
+        } catch (err) {
+            console.error('Delete user error:', err, err.response?.data || err.message);
+            const message = err.response?.data?.message || err.response?.data?.error || err.message || 'Failed to delete user';
+            toast.error(message);
+        }
+    };
 
     const stats = {
         total: users.length,
@@ -187,9 +222,10 @@ const AdminUsers = () => {
                                         {new Date(user.createdAt).toLocaleDateString()}
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                                            <HiDotsVertical className="w-5 h-5 text-gray-400" />
-                                        </button>
+                                        <div className="inline-flex items-center gap-2">
+                                            <button onClick={() => handleEditUser(user)} className="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm hover:bg-blue-100 transition">Edit</button>
+                                            <button onClick={() => handleDeleteUser(user)} className="px-3 py-2 bg-red-50 text-red-600 rounded-lg text-sm hover:bg-red-100 transition">Delete</button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

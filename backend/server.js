@@ -75,6 +75,8 @@ const courseRoutes = require('./routes/courseRoutes');
 const lessonRoutes = require('./routes/lessonRoutes');
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
 const googleAuthRoutes = require('./routes/googleAuthRoutes');
+const contactRoutes = require('./routes/contactRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 // Mount Routes
 app.use('/api/auth', authRoutes);
@@ -82,6 +84,8 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/auth', googleAuthRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Export for Vercel serverless
 module.exports = app;

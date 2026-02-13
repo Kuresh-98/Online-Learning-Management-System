@@ -25,6 +25,9 @@ router.get('/me', protect, getMe);
 
 // Admin routes
 router.get('/users', protect, authorize('admin'), getAllUsers);
+// Admin: update or delete user
+router.put('/users/:id', protect, authorize('admin'), require('../controllers/authController').updateUserByAdmin);
+router.delete('/users/:id', protect, authorize('admin'), require('../controllers/authController').deleteUserByAdmin);
 
 router.post('/reset-password', resetPassword);
 router.post('/change-password', protect, changePassword); // protect = authentication middleware

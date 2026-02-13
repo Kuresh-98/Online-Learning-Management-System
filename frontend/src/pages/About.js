@@ -76,14 +76,14 @@ const About = () => {
                     <div className="text-center max-w-3xl mx-auto">
                         <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
                             <HiAcademicCap className="w-4 h-4" />
-                            About LearnHub
+                            About Learnify
                         </div>
                         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                             Empowering Learners to
                             <span className="text-blue-600"> Achieve More</span>
                         </h1>
                         <p className="text-lg text-gray-600 leading-relaxed">
-                            LearnHub was founded with a simple mission: to make quality education accessible to everyone.
+                            Learnify was founded with a simple mission: to make quality education accessible to everyone.
                             We connect passionate instructors with eager learners, creating a vibrant community
                             dedicated to growth and knowledge sharing.
                         </p>
@@ -115,7 +115,7 @@ const About = () => {
                             <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
                             <div className="space-y-4 text-gray-600">
                                 <p>
-                                    LearnHub started in 2022 as a small project by a group of educators who saw the
+                                    Learnify started in 2022 as a small project by a group of educators who saw the
                                     potential of online learning. Frustrated by expensive courses and inaccessible
                                     content, we set out to create a platform that puts learners first.
                                 </p>
@@ -152,7 +152,7 @@ const About = () => {
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Values</h2>
                         <p className="text-gray-600 max-w-2xl mx-auto">
-                            These core principles guide everything we do at LearnHub.
+                            These core principles guide everything we do at Learnify.
                         </p>
                     </div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -175,7 +175,7 @@ const About = () => {
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
                         <p className="text-gray-600 max-w-2xl mx-auto">
-                            The passionate people behind LearnHub who work tirelessly to make learning accessible.
+                            The passionate people behind Learnify who work tirelessly to make learning accessible.
                         </p>
                     </div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -204,7 +204,7 @@ const About = () => {
                         Ready to Start Your Learning Journey?
                     </h2>
                     <p className="text-blue-100 max-w-2xl mx-auto mb-8">
-                        Join thousands of learners who are already transforming their careers with LearnHub.
+                        Join thousands of learners who are already transforming their careers with Learnify.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link

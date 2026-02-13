@@ -36,6 +36,9 @@ const router = express.Router();
 
 // Admin routes (MUST be before :id routes)
 router.get('/admin/stats', protect, authorize('admin'), getEnrollmentStats);
+// Admin: list all enrollments and allow deletion
+router.get('/admin/all', protect, authorize('admin'), require('../controllers/enrollmentController').getAllEnrollments);
+router.delete('/admin/:id', protect, authorize('admin'), require('../controllers/enrollmentController').deleteEnrollmentByAdmin);
 
 // Student routes
 router.post('/', protect, authorize('student'), enrollInCourse);

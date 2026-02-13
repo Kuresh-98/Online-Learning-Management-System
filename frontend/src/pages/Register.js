@@ -145,7 +145,7 @@ const Register = () => {
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 text-blue-600 mb-8">
                         <HiAcademicCap className="w-10 h-10" />
-                        <span className="text-2xl font-bold text-gray-900">LearnHub</span>
+                        <span className="text-2xl font-bold text-gray-900">Learnify</span>
                     </Link>
 
                     {/* Header */}

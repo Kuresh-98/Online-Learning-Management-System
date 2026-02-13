@@ -22,7 +22,11 @@ const connectDB = async () => {
     `);
     } catch (error) {
         console.error(`❌ MongoDB Connection Error: ${error.message}`);
-        process.exit(1); // Exit with failure
+        // In development allow the server to continue so local features (like contact API)
+        // can be tested without a live DB. Do not exit the process here.
+        if (process.env.NODE_ENV === 'production') {
+            process.exit(1); // Exit in production to avoid running without DB
+        }
     }
 };
 

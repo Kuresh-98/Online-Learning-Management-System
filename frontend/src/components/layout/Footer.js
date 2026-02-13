@@ -47,25 +47,14 @@ const Footer = () => {
                             <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
                                 <HiAcademicCap className="w-6 h-6 text-white" />
                             </div>
-                            <span className="text-xl font-bold text-white">LearnHub</span>
+                            <span className="text-xl font-bold text-white">Learnify</span>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6">
                             Empowering learners worldwide with quality education.
                             Start your learning journey today and unlock your potential.
                         </p>
                         {/* Social Links */}
-                        <div className="flex gap-3">
-                            {socialLinks.map((social) => (
-                                <a
-                                    key={social.label}
-                                    href={social.href}
-                                    aria-label={social.label}
-                                    className="w-9 h-9 bg-gray-800 hover:bg-blue-600 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all"
-                                >
-                                    {social.icon}
-                                </a>
-                            ))}
-                        </div>
+
                     </div>
 
                     {/* Quick Links */}
@@ -109,19 +98,19 @@ const Footer = () => {
                             <li className="flex items-start gap-3">
                                 <HiLocationMarker className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
                                 <span className="text-sm text-gray-400">
-                                    123 Learning Street, Education City, EC 12345
+                                    Anand , Gujarat, India.
                                 </span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <HiMail className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                                <a href="mailto:support@learnhub.com" className="text-sm text-gray-400 hover:text-white transition-colors">
-                                    support@learnhub.com
+                                <a href="mailto:support@learnify.com" className="text-sm text-gray-400 hover:text-white transition-colors">
+                                    support@learnify.com
                                 </a>
                             </li>
                             <li className="flex items-center gap-3">
                                 <HiPhone className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                                <a href="tel:+1234567890" className="text-sm text-gray-400 hover:text-white transition-colors">
-                                    +1 (234) 567-890
+                                <a href="tel:+919408256972" className="text-sm text-gray-400 hover:text-white transition-colors">
+                                    +91 9408256972
                                 </a>
                             </li>
                         </ul>
@@ -134,7 +123,7 @@ const Footer = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                         <p className="text-sm text-gray-500">
-                            © {currentYear} LearnHub. All rights reserved.
+                            © {currentYear} Learnify. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6">
                             {support.map((link) => (

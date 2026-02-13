@@ -462,3 +462,57 @@ exports.getEnrollmentStats = async (req, res) => {
         });
     }
 };
+
+/**
+ * @desc    Get all enrollments (Admin)
+ * @route   GET /api/enrollments/admin/all
+ * @access  Private (Admin)
+ */
+exports.getAllEnrollments = async (req, res) => {
+    try {
+        const enrollments = await Enrollment.find()
+            .populate('student', 'name email profilePicture')
+            .populate('course', 'title')
+            .sort({ enrolledAt: -1 });
+
+        const data = enrollments.map(e => ({
+            id: e._id,
+            studentId: e.student?._id,
+            studentName: e.student?.name || 'Unknown',
+            studentEmail: e.student?.email || '',
+            courseId: e.course?._id,
+            courseTitle: e.course?.title || 'Unknown Course',
+            enrolledAt: e.enrolledAt,
+            status: e.status
+        }));
+
+        res.status(200).json({ success: true, count: data.length, data });
+    } catch (error) {
+        console.error('Get All Enrollments Error:', error);
+        res.status(500).json({ success: false, message: 'Error fetching enrollments', error: error.message });
+    }
+};
+
+/**
+ * @desc    Delete an enrollment (Admin)
+ * @route   DELETE /api/enrollments/admin/:id
+ * @access  Private (Admin)
+ */
+exports.deleteEnrollmentByAdmin = async (req, res) => {
+    try {
+        const enrollment = await Enrollment.findById(req.params.id);
+        if (!enrollment) return res.status(404).json({ success: false, message: 'Enrollment not found' });
+
+        // Decrement course enrolledCount if active
+        if (enrollment.status !== 'dropped') {
+            await Course.findByIdAndUpdate(enrollment.course, { $inc: { enrolledCount: -1 } });
+        }
+
+        await Enrollment.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({ success: true, message: 'Enrollment deleted' });
+    } catch (error) {
+        console.error('Delete Enrollment Error:', error);
+        res.status(500).json({ success: false, message: 'Error deleting enrollment', error: error.message });
+    }
+};

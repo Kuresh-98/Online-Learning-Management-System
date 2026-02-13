@@ -10,6 +10,7 @@ import {
     HiPaperAirplane
 } from 'react-icons/hi';
 import toast from 'react-hot-toast';
+import api from '../utils/api';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -35,32 +36,37 @@ const Contact = () => {
 
         setIsSubmitting(true);
 
-        // Simulate form submission
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        toast.success('Message sent successfully! We\'ll get back to you soon.');
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        setIsSubmitting(false);
+        try {
+            const res = await api.post('/contact', formData);
+            toast.success(res.data?.message || 'Message sent successfully! We\'ll get back to you soon.');
+            setFormData({ name: '', email: '', subject: '', message: '' });
+        } catch (err) {
+            console.error('Contact send error:', err);
+            const msg = err.response?.data?.message || 'Failed to send message. Please try again later.';
+            toast.error(msg);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const contactInfo = [
         {
             icon: <HiMail className="w-6 h-6" />,
             title: 'Email Us',
-            details: 'support@learnhub.com',
+            details: 'support@learnify.com',
             subtext: 'We reply within 24 hours'
         },
         {
             icon: <HiPhone className="w-6 h-6" />,
             title: 'Call Us',
-            details: '+91 98765 43210',
+            details: '+91 9408256972',
             subtext: 'Mon-Fri, 9AM-6PM IST'
         },
         {
             icon: <HiLocationMarker className="w-6 h-6" />,
             title: 'Visit Us',
-            details: 'Koramangala, Bangalore',
-            subtext: 'Karnataka, India 560034'
+            details: 'Anand, Gujarat',
+            subtext: 'Gujarat, India 388001'
         },
         {
             icon: <HiClock className="w-6 h-6" />,
@@ -212,49 +218,13 @@ const Contact = () => {
                         </div>
 
                         {/* Map / Support Info */}
-                        <div>
-                            <div className="bg-gray-100 rounded-2xl h-64 mb-6 overflow-hidden">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5965919426!2d77.6205!3d12.9352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU2JzA2LjciTiA3N8KwMzcnMTMuOCJF!5e0!3m2!1sen!2sin!4v1707300000000!5m2!1sen!2sin"
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 0 }}
-                                    allowFullScreen=""
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    title="LearnHub Location"
-                                    className="grayscale hover:grayscale-0 transition-all"
-                                />
-                            </div>
 
-                            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-6 text-white">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <HiSupport className="w-8 h-8" />
-                                    <h3 className="text-xl font-bold">Need Immediate Help?</h3>
-                                </div>
-                                <p className="text-blue-100 mb-4">
-                                    Our support team is available during business hours to assist you with any urgent queries.
-                                </p>
-                                <div className="flex flex-wrap gap-4">
-                                    <a
-                                        href="mailto:support@learnhub.com"
-                                        className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
-                                    >
-                                        <HiMail className="w-4 h-4" />
-                                        Email Support
-                                    </a>
-                                    <a
-                                        href="tel:+919876543210"
-                                        className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
-                                    >
-                                        <HiPhone className="w-4 h-4" />
-                                        Call Now
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+
+
                     </div>
                 </div>
+
+
             </section>
 
             {/* FAQs */}

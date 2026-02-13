@@ -15,7 +15,7 @@ dotenv.config({ path: path.join(__dirname, '..', '.env') });
 const User = require('../models/User');
 
 // Admin credentials - CHANGE THESE!
-const ADMIN_EMAIL = 'admin@learnhub.com';
+const ADMIN_EMAIL = 'admin@learnify.com';
 const ADMIN_PASSWORD = 'Admin@123';
 const ADMIN_NAME = 'Admin User';
 

@@ -280,3 +280,50 @@ exports.forgotPassword = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error', error: error.message });
     }
 };
+
+/**
+ * @desc    Update user by admin
+ * @route   PUT /api/auth/users/:id
+ * @access  Private (Admin)
+ */
+exports.updateUserByAdmin = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, email, role, isActive } = req.body;
+
+        const user = await User.findById(id);
+        if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+        if (name) user.name = name;
+        if (email) user.email = email;
+        if (role) user.role = role;
+        if (typeof isActive === 'boolean') user.isActive = isActive;
+
+        await user.save();
+
+        res.status(200).json({ success: true, message: 'User updated', data: { _id: user._id, name: user.name, email: user.email, role: user.role, isActive: user.isActive } });
+    } catch (error) {
+        console.error('Update User Error:', error);
+        res.status(500).json({ success: false, message: 'Error updating user', error: error.message });
+    }
+};
+
+/**
+ * @desc    Delete user by admin
+ * @route   DELETE /api/auth/users/:id
+ * @access  Private (Admin)
+ */
+exports.deleteUserByAdmin = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);
+        if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+        await User.findByIdAndDelete(id);
+
+        res.status(200).json({ success: true, message: 'User deleted' });
+    } catch (error) {
+        console.error('Delete User Error:', error);
+        res.status(500).json({ success: false, message: 'Error deleting user', error: error.message });
+    }
+};

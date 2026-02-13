@@ -19,10 +19,13 @@ const Home = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [featuredCourses, setFeaturedCourses] = useState([]);
     const [coursesLoading, setCoursesLoading] = useState(true);
+    const [reviews, setReviews] = useState([]);
+    const [reviewsLoading, setReviewsLoading] = useState(true);
 
     useEffect(() => {
         setIsVisible(true);
         fetchFeaturedCourses();
+        fetchReviews();
     }, []);
 
     const fetchFeaturedCourses = async () => {
@@ -78,6 +81,28 @@ const Home = () => {
             ]);
         } finally {
             setCoursesLoading(false);
+        }
+    };
+
+    const fetchReviews = async () => {
+        try {
+            setReviewsLoading(true);
+            const res = await api.get('/reviews?limit=6');
+            const data = res.data.data || [];
+            const mapped = data.map((r) => ({
+                id: r._id,
+                name: r.student?.name || 'Student',
+                image: r.student?.profilePicture || `https://randomuser.me/api/portraits/lego/${Math.floor(Math.random() * 10)}.jpg`,
+                text: r.review,
+                rating: r.rating || 5,
+                courseTitle: r.course?.title || ''
+            }));
+            setReviews(mapped);
+        } catch (err) {
+            console.error('Error fetching reviews:', err);
+            setReviews([]);
+        } finally {
+            setReviewsLoading(false);
         }
     };
 
@@ -160,29 +185,7 @@ const Home = () => {
                             </Link>
                         </div>
 
-                        {/* Trust Indicators */}
-                        <div className={`flex flex-wrap items-center justify-center gap-8 transition-all duration-700 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            <div className="flex items-center gap-2">
-                                <div className="flex -space-x-2">
-                                    {['https://randomuser.me/api/portraits/women/1.jpg', 'https://randomuser.me/api/portraits/men/2.jpg', 'https://randomuser.me/api/portraits/women/3.jpg', 'https://randomuser.me/api/portraits/men/4.jpg'].map((img, i) => (
-                                        <img key={i} src={img} alt="" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
-                                    ))}
-                                </div>
-                                <span className="text-sm text-gray-600">
-                                    <strong className="text-gray-900">500+</strong> active learners
-                                </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <div className="flex">
-                                    {[1, 2, 3, 4, 5].map((i) => (
-                                        <HiStar key={i} className="w-5 h-5 text-yellow-400" />
-                                    ))}
-                                </div>
-                                <span className="text-sm text-gray-600">
-                                    <strong className="text-gray-900">4.6</strong> average rating
-                                </span>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </section>
@@ -356,7 +359,7 @@ const Home = () => {
                 <div className="max-w-7xl mx-auto px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                            Why Learn with LearnHub?
+                            Why Learn with Learnify?
                         </h2>
                         <p className="text-blue-100 max-w-2xl mx-auto">
                             We provide everything you need to succeed in your learning journey
@@ -398,30 +401,34 @@ const Home = () => {
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
-                        {testimonials.map((testimonial, index) => (
-                            <div
-                                key={index}
-                                className="p-8 bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300"
-                            >
-                                <div className="flex mb-4">
-                                    {[1, 2, 3, 4, 5].map((i) => (
-                                        <HiStar key={i} className="w-5 h-5 text-yellow-400" />
-                                    ))}
+                        {reviewsLoading ? (
+                            [1, 2, 3].map(i => (
+                                <div key={i} className="p-8 bg-white rounded-2xl border border-gray-100 animate-pulse">
+                                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                                    <div className="h-6 bg-gray-200 rounded w-full mb-6"></div>
                                 </div>
-                                <p className="text-gray-600 mb-6 leading-relaxed">"{testimonial.text}"</p>
-                                <div className="flex items-center gap-4">
-                                    <img
-                                        src={testimonial.image}
-                                        alt={testimonial.name}
-                                        className="w-12 h-12 rounded-full object-cover"
-                                    />
-                                    <div>
-                                        <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
-                                        <p className="text-sm text-gray-500">{testimonial.role}</p>
+                            ))
+                        ) : reviews.length === 0 ? (
+                            <div className="text-center text-gray-500 col-span-3">No reviews yet.</div>
+                        ) : (
+                            reviews.map((t) => (
+                                <div key={t.id} className="p-8 bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300">
+                                    <div className="flex mb-4">
+                                        {[1, 2, 3, 4, 5].map(i => (
+                                            <HiStar key={i} className={`w-5 h-5 ${i <= t.rating ? 'text-yellow-400' : 'text-gray-200'}`} />
+                                        ))}
+                                    </div>
+                                    <p className="text-gray-600 mb-6 leading-relaxed">"{t.text}"</p>
+                                    <div className="flex items-center gap-4">
+                                        <img src={t.image} alt={t.name} className="w-12 h-12 rounded-full object-cover" />
+                                        <div>
+                                            <h4 className="font-semibold text-gray-900">{t.name}</h4>
+                                            <p className="text-sm text-gray-500">{t.courseTitle}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))
+                        )}
                     </div>
                 </div>
             </section>
